@@ -8,6 +8,8 @@ import v4 = require('uuid/v4');
 export interface IFieldListStore extends IEventListenerStore {
   getPlayerFields: FieldObject[];
   getOpponentFields: FieldObject[];
+  getHasMove: boolean;
+  getIsActiveGame: boolean;
 }
 
 const SUBSCRIBED_EVENTS = ['player_field_list', 'opponent_field_list', 'field_change'];
@@ -19,23 +21,36 @@ export class FieldListStore implements IFieldListStore {
 
     this.playerFieldList = [];
     for (let n = 0; n < 144; n++) {
-      this.playerFieldList.push(new FieldObject(v4(), false, false));
+      this.playerFieldList.push(new FieldObject(v4(), false, false, true, false));
     }
 
     this.opponentFieldList = [];
     for (let n = 0; n < 144; n++) {
-      this.opponentFieldList.push(new FieldObject(v4(), false, false));
+      this.opponentFieldList.push(new FieldObject(v4(), false, false, false, false));
     }
   }
 
-  @observable activeGame: boolean = false;
+  @observable isActiveGame: boolean = false;
+  @observable hasMove: boolean = false;
   @observable playerFieldList: FieldObject[] = [];
   @observable opponentFieldList: FieldObject[] = [];
 
+  @computed
+  public get getHasMove(): boolean {
+    return this.hasMove;
+  }
+
+  @computed
+  public get getIsActiveGame(): boolean {
+    return this.isActiveGame;
+  }
+
+  @computed
   public get getPlayerFields(): FieldObject[] {
     return this.playerFieldList;
   }
 
+  @computed
   public get getOpponentFields(): FieldObject[] {
     return this.opponentFieldList;
   }

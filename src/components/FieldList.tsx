@@ -5,7 +5,7 @@ import { FieldListStore } from '../stores/fieldListStore';
 import { FieldObject } from '../events/FieldObject';
 
 interface FieldListProps {
-  isPlayer: boolean,
+  isPlayer: boolean;
   fieldListStore?: FieldListStore;
 }
 
@@ -19,11 +19,25 @@ class FieldList extends Component<FieldListProps, {}> {
   render() {
     if (this.props.isPlayer) {
       return this.props.fieldListStore!.playerFieldList.map((field: FieldObject) => (
-        <Field key={field.fieldId} fieldId={field.fieldId} isHit={field.isHit} isShip={field.isShip} />
+        <Field
+          key={field.fieldId}
+          fieldId={field.fieldId}
+          isHit={field.isHit}
+          isPlayer={field.isPlayer}
+          isAccessed={field.isAccessed}
+          isShip={field.isShip}
+        />
       ));
     }
     return this.props.fieldListStore!.opponentFieldList.map((field: FieldObject) => (
-      <Field key={field.fieldId} fieldId={field.fieldId} isHit={field.isHit} isShip={field.isShip} />
+      <Field
+        key={field.fieldId}
+        fieldId={field.fieldId}
+        isHit={field.isHit}
+        isShip={field.isShip}
+        isPlayer={field.isPlayer}
+        isAccessed={field.isAccessed}
+      />
     ));
   }
 }
