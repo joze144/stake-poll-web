@@ -1,6 +1,6 @@
-import { IncomingMessage } from '../events/IncomingMessage';
+import { IncomingMessage } from '../IncomingMessage';
 
-export interface IEventSubscription {
+export interface IEventSubscriptionComponent {
   handleMessage(message: IncomingMessage): void;
   getComponentId: string;
 }

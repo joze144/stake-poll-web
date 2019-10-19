@@ -8,6 +8,7 @@ export function createStores() {
     authStore: rootStore.authStore,
     websocketStore: rootStore.websocketStore,
     eventSubscriptionStore: rootStore.eventSubscriptionStore,
+    routerStore: rootStore.routerStore,
     fieldListStore: rootStore.fieldListStore,
   };
 }

@@ -1,9 +1,9 @@
 import { action, observable } from 'mobx';
 
-import { RootStore } from './rootStore';
+import { RootStore } from '../rootStore';
 
-import { Message } from '../events/Message';
-import { IncomingMessage } from '../events/IncomingMessage';
+import { Message } from './events/Message';
+import { IncomingMessage } from '../IncomingMessage';
 
 export interface IWebsocketStore {
   websocket: WebSocket | null;
@@ -27,12 +27,31 @@ export class WebsocketStore implements IWebsocketStore {
   @observable startedTime: number = 0;
   @observable connectedIn: number = 0;
 
+  @observable messageQueue: IncomingMessage[] = [];
+
+  private pushToQueue(message: IncomingMessage): void {
+    this.messageQueue = this.messageQueue.filter((qMessage: IncomingMessage) => {
+      return qMessage.messageType !== message.messageType;
+    });
+    this.messageQueue.push(message);
+  }
+
+  private sendMessagesFromQueue() {
+    while (this.messageQueue.length > 0 && this.connected) {
+      const message = this.messageQueue.shift();
+      if (message) {
+        this.sendMessage(message);
+      }
+    }
+  }
+
   public sendMessage(message: IncomingMessage): boolean {
     if (!this.connected || !this.websocket) {
+      this.pushToQueue(message);
       return false;
     }
     let authHeader = this.rootStore.authStore!.getAuthorizationHeader;
-    const headers = { ...authHeader, messageType: message.messageType };
+    const headers = { authHeader, messageType: message.messageType };
     const payload = new Message(message, headers);
 
     console.log(payload);
@@ -60,6 +79,7 @@ export class WebsocketStore implements IWebsocketStore {
   public setConnected(): void {
     this.connected = true;
     this.connectedIn = new Date().getTime() - this.startedTime;
+    this.sendMessagesFromQueue();
   }
 
   @action

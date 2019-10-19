@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Field from './Field';
 import { inject, observer } from 'mobx-react';
-import { FieldListStore } from '../stores/fieldListStore';
-import { FieldObject } from '../events/FieldObject';
+import { FieldListStore } from './Game/fieldListStore';
 
 interface FieldListProps {
   isPlayer: boolean;
@@ -18,7 +17,7 @@ class FieldList extends Component<FieldListProps, {}> {
 
   render() {
     if (this.props.isPlayer) {
-      return this.props.fieldListStore!.playerFieldList.map((field: FieldObject) => (
+      return this.props.fieldListStore!.playerFieldList.map((field) => (
         <Field
           key={field.fieldId}
           fieldId={field.fieldId}
@@ -29,7 +28,7 @@ class FieldList extends Component<FieldListProps, {}> {
         />
       ));
     }
-    return this.props.fieldListStore!.opponentFieldList.map((field: FieldObject) => (
+    return this.props.fieldListStore!.opponentFieldList.map((field) => (
       <Field
         key={field.fieldId}
         fieldId={field.fieldId}

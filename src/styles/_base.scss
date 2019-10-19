@@ -12,3 +12,18 @@ body {
   grid-template-rows: repeat(12, 25px);
   grid-auto-flow: column;
 }
+
+.meta-mask-img {
+  height: 100px;
+  max-height: 100%;
+  text-align: center;
+}
+
+.web3-Provider-image {
+  height: 400px;
+  max-height: 100%;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}

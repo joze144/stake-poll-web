@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { action } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { IWebsocketStore } from '../stores/websocketStore';
+import { IWebsocketStore } from './websocketStore';
 
 interface WebsocketProps {
   url: string;

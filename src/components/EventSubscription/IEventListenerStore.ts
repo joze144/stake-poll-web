@@ -1,4 +1,4 @@
-import { IncomingMessage } from '../events/IncomingMessage';
+import { IncomingMessage } from '../IncomingMessage';
 
 export interface IEventListenerStore {
   getSubscribedEvents: string[];

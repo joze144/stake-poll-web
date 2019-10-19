@@ -1,9 +1,9 @@
-import { RootStore } from './rootStore';
+import { RootStore } from '../rootStore';
 import { action, observable } from 'mobx';
 
-import { IEventSubscription } from '../components/IEventSubscription';
+import { IEventSubscriptionComponent } from './IEventSubscriptionComponent';
 
-import { IncomingMessage } from '../events/IncomingMessage';
+import { IncomingMessage } from '../IncomingMessage';
 
 export interface IEventSubscriptionStore {
   registerComponent(component: any, subscribedEvents: string[]): void;
@@ -15,7 +15,7 @@ interface Subscription {
 }
 
 interface Component {
-  [key: string]: IEventSubscription;
+  [key: string]: IEventSubscriptionComponent;
 }
 
 export class EventSubscriptionStore implements IEventSubscriptionStore {
@@ -33,11 +33,12 @@ export class EventSubscriptionStore implements IEventSubscriptionStore {
       return;
     }
     const subscriptions = this.subscriptions[message.messageType];
+    // TODO: make this async and non blocking
     subscriptions.map(componentId => this.components[componentId].handleMessage(message));
   }
 
   @action
-  registerComponent(component: IEventSubscription, subscribedEvents: string[]): void {
+  registerComponent(component: IEventSubscriptionComponent, subscribedEvents: string[]): void {
     const componentId = component.getComponentId;
     this.components[componentId] = component;
 
@@ -53,7 +54,7 @@ export class EventSubscriptionStore implements IEventSubscriptionStore {
   }
 
   @action
-  unregisterComponent(component: IEventSubscription): void {
+  unregisterComponent(component: IEventSubscriptionComponent): void {
     const componentId = component.getComponentId;
 
     for (let [key, value] of Object.entries(this.subscriptions)) {

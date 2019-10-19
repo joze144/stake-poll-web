@@ -1,9 +1,24 @@
-import { FieldObject } from '../events/FieldObject';
-import { RootStore } from './rootStore';
+import { RootStore } from '../rootStore';
 import { action, computed, observable } from 'mobx';
-import { IEventListenerStore } from './IEventListenerStore';
-import { IncomingMessage } from '../events/IncomingMessage';
-import v4 = require('uuid/v4');
+import { IEventListenerStore } from '../EventSubscription/IEventListenerStore';
+import { IncomingMessage } from '../IncomingMessage';
+import { v4 } from 'uuid';
+
+class FieldObject {
+  fieldId: string;
+  isHit: boolean;
+  isPlayer: boolean;
+  isShip: boolean;
+  isAccessed: boolean;
+
+  constructor(id: string, isHit: boolean, isPlayer: boolean, isShip: boolean, isAccessed: boolean) {
+    this.fieldId = id;
+    this.isHit = isHit;
+    this.isPlayer = isPlayer;
+    this.isShip = isShip;
+    this.isAccessed = isAccessed;
+  }
+}
 
 export interface IFieldListStore extends IEventListenerStore {
   getPlayerFields: FieldObject[];
