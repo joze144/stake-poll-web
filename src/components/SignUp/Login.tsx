@@ -41,6 +41,10 @@ class Login extends Component<LoginProps, LoginState> {
     this.props.authStore!.login();
   };
 
+  _onLogout = () => {
+    this.props.authStore!.logout();
+  };
+
   render() {
     const hasWallet = this.props.authStore!.hasWallet;
     const metamaskConnected = this.props.authStore!.metamaskConnected;
@@ -49,14 +53,13 @@ class Login extends Component<LoginProps, LoginState> {
     let grid;
 
     if (loggedIn) {
-      form = (<p>Logged IN</p>);
+      form = (<LoginWithMetamaskIcon text="Logout" onLogin={this._onLogout} />);
       grid = (<Grid container>
         <Grid item xs>
           <Link to={'/'}>Back home</Link>
         </Grid>
       </Grid>);
     } else if (hasWallet && !metamaskConnected) {
-      console.log("not connected")
       form = (<LoginWithMetamaskIcon text="Connect Metamask" onLogin={this._onConnectMetamask} />);
       grid = (<Grid container>
         <Grid item xs>
@@ -64,7 +67,6 @@ class Login extends Component<LoginProps, LoginState> {
         </Grid>
       </Grid>);
     } else if (hasWallet && metamaskConnected) {
-      console.log("connected")
       form = (<LoginWithMetamaskIcon text="Login" onLogin={this._onLogin} />);
       grid = (<Grid container>
         <Grid item xs>

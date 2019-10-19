@@ -1,7 +1,8 @@
 import { action, computed, flow, observable } from 'mobx';
+import { persist } from 'mobx-persist';
 import { RootStore } from '../rootStore';
 
-import { fetchWallet, fetchWalletData, hasProvider, signMessage } from './web3Service';
+import { fetchWallet, fetchWalletData, hasProvider, signMessage, verifySignMessage } from './web3Service';
 
 const TWO_SECONDS = 2000;
 
@@ -28,12 +29,12 @@ export class AuthStore implements IAuthStore {
     this.measure();
   }
 
-  @observable loggedId: boolean = false;
-  @observable userId: string = '';
-  @observable publicAddress: string = '';
-  @observable hasWallet: boolean = false;
-  @observable metamaskConnected: boolean = false;
-  @observable jwtToken: string = '';
+  @persist @observable loggedId: boolean = false;
+  @persist @observable userId: string = '';
+  @persist @observable publicAddress: string = '';
+  @persist @observable hasWallet: boolean = false;
+  @persist @observable metamaskConnected: boolean = false;
+  @persist @observable jwtToken: string = '';
 
   @computed
   public get getAuthorizationHeader(): string {
@@ -75,9 +76,7 @@ export class AuthStore implements IAuthStore {
   private fetchWeb3AccountsFlow = flow(function*(store: AuthStore): any {
     try {
       const wallet = yield fetchWallet();
-      console.log(wallet);
       if (wallet && wallet.publicAddress && wallet.networkVersion === "1") {
-        // @ts-ignore
         store.publicAddress = wallet.publicAddress;
         store.metamaskConnected = true;
       } else {
@@ -104,7 +103,6 @@ export class AuthStore implements IAuthStore {
   private checkWeb3AccountsFlow = flow(function*(store: AuthStore): any {
     try {
       const wallet = yield fetchWalletData();
-      console.log(wallet);
       if (wallet && wallet.publicAddress && wallet.networkVersion === "1") {
         store.publicAddress = wallet.publicAddress;
         store.metamaskConnected = true;
@@ -131,9 +129,7 @@ export class AuthStore implements IAuthStore {
 
   private checkWalletFlow = flow(function*(store: AuthStore): any {
     try {
-      const hasIt = yield hasProvider();
-      console.log(hasIt);
-      store.hasWallet = hasIt;
+      store.hasWallet = yield hasProvider();
     } catch (e) {
       store.hasWallet = false;
     }
@@ -145,8 +141,15 @@ export class AuthStore implements IAuthStore {
   }
 
   private loginFlow = flow(function* (store: AuthStore): any {
-    const data = yield signMessage(store.publicAddress, 'By signing this message we will validate your account. It does not cost anything');
-    console.log(data);
-    // yield verifySignMessage()
+    try {
+      const data = yield signMessage(store.publicAddress, 'By signing this message we will validate your account. It does not cost anything');
+      const serverResp = yield verifySignMessage(data);
+      store.userId = serverResp.id;
+      store.publicAddress = serverResp.public_address;
+      store.jwtToken = serverResp.jwt_token;
+      store.loggedId = true;
+    } catch (e) {
+      console.error(e.message)
+    }
   })
 }
