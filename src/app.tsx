@@ -16,7 +16,7 @@ import WithRouterStore from './components/Router/WithRouterStore';
 import Header from './components/Header/Header';
 import { CssBaseline } from '@material-ui/core';
 import Connected from './components/Websocket/Connected';
-import FieldList from './components/FieldList';
+import Game from './components/Game/Game';
 
 const stores = createStores();
 
@@ -32,7 +32,7 @@ render(
           <Switch>
             <Route path="/" exact component={WithRouterStore(stores.routerStore)(Home)} />
             <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
-            <Route path="/writings" exact component={WithRouterStore(stores.routerStore)(FieldList)} />
+            <Route path="/game" exact component={WithRouterStore(stores.routerStore)(Game)} />
             <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
           </Switch>
         </div>

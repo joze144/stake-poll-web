@@ -1,4 +1,4 @@
 export interface IncomingMessage {
-  messageType: string;
+  message_type: string;
   [key: string]: any;
 }

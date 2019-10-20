@@ -48,7 +48,7 @@ class Header extends Component<HeaderProps> {
       leftButtons = (
         <div>
           <LeftButton key={v4()} title="Crypto Ships" navigate={this._navigate} path="/" />
-          <LeftButton key={v4()} title="Game" navigate={this._navigate} path="/writings" />
+          <LeftButton key={v4()} title="Game" navigate={this._navigate} path="/game" />
         </div>
       );
       rightButtons = (
@@ -62,6 +62,7 @@ class Header extends Component<HeaderProps> {
       leftButtons = (
         <div>
           <LeftButton key={v4()} title="Crypto Ships" navigate={this._navigate} path="/" />
+          <LeftButton key={v4()} title="Game" navigate={this._navigate} path="/game" />
         </div>
       );
       rightButtons = (

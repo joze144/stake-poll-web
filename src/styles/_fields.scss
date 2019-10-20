@@ -1,35 +1,50 @@
+.field-wrapper {
+  margin-top: 20px;
+  padding: 5px;
+  display: grid;
+  min-width: 400px;
+  max-width: 600px;
+  grid-template-columns: repeat(12, auto);
+  grid-gap: 2px;
+  background-color: #fafafa;
+  text-align: center;
+  border: #444444;
+  border-style: solid;
+  border-radius: 5px;
+}
+
 .field-sea {
   background-color: #444;
-  color: #fff;
   border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
 }
 
 .field-player {
   background-color: $playerColor;
-  color: #fff;
   border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
 }
 
 .field-opponent {
   background-color: $opponentColor;
-  color: #fff;
   border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
 }
 
 .field-ship {
   background-color: #F0F0F0;
-  color: #fff;
   border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
 }
 
 .field-hit {
   background-color: $hitColor;
-  color: #fff;
   border-radius: 5px;
+  padding: 10px;
   cursor: pointer;
 }
 

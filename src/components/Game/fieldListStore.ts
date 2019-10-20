@@ -4,7 +4,7 @@ import { IEventListenerStore } from '../EventSubscription/IEventListenerStore';
 import { IncomingMessage } from '../IncomingMessage';
 import { v4 } from 'uuid';
 
-class FieldObject {
+export class FieldObject {
   fieldId: string;
   isHit: boolean;
   isPlayer: boolean;
@@ -36,7 +36,7 @@ export class FieldListStore implements IFieldListStore {
 
     this.playerFieldList = [];
     for (let n = 0; n < 144; n++) {
-      this.playerFieldList.push(new FieldObject(v4(), false, false, true, false));
+      this.playerFieldList.push(new FieldObject(v4(), false, true, true, false));
     }
 
     this.opponentFieldList = [];
