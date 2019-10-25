@@ -1,6 +1,7 @@
 body {
   background-color: $background-color;
   font-family: $font-family;
+  color: #24292e;
 }
 
 .wrapper {
@@ -11,6 +12,11 @@ body {
   grid-template-columns: repeat(12, 25px);
   grid-template-rows: repeat(12, 25px);
   grid-auto-flow: column;
+}
+
+.header-img {
+  align-items: center;
+  text-align: center;
 }
 
 .meta-mask-img {
@@ -26,4 +32,35 @@ body {
 
 .mt-20 {
   margin-top: 20px;
+}
+
+.pt-10 {
+  padding-top: 10px;
+}
+
+.pt-50 {
+  padding-top: 50px;
+}
+
+.ta-center {
+  text-align: center;
+}
+
+.box-cool {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.just-center {
+  justify-content: center;
+}
+
+.btn-s {
+  border-radius: 3px;
+  border: 0;
+  color: white;
+  height: 48px;
+  padding: 0 30px;
+  box-shadow: 3px 3px 5px 6px #ccc;
+  -moz-box-shadow: 3px 3px 5px 6px #ccc;
+  -webkit-box-shadow: 3px 3px 5px 6px #ccc;
 }

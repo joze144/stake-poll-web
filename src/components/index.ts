@@ -6,9 +6,8 @@ export function createStores() {
   return {
     rootStore: rootStore,
     authStore: rootStore.authStore,
+    createPollStore: rootStore.createPollStore,
     eventSubscriptionStore: rootStore.eventSubscriptionStore,
-    fieldListStore: rootStore.fieldListStore,
-    gameStore: rootStore.gameStore,
     routerStore: rootStore.routerStore,
     websocketStore: rootStore.websocketStore,
   };

@@ -6,14 +6,12 @@ import { IWebsocketStore, WebsocketStore } from './Websocket/websocketStore';
 import { AuthStore, IAuthStore } from './SignUp/authStore';
 import { EventSubscriptionStore, IEventSubscriptionStore } from './EventSubscription/eventSubscriptionStore';
 import { IRouterStore, RouterStore } from './Router/routerStore';
-import { FieldListStore, IFieldListStore } from './Game/fieldListStore';
-import { GameStore, IGameStore } from './Game/gameStore';
+import { CreatePollStore, ICreatePollStore } from './PollBuilder/createPollStore';
 
 export interface IRootStore {
   authStore?: IAuthStore;
+  createPollStore?: ICreatePollStore;
   eventSubscriptionStore?: IEventSubscriptionStore;
-  fieldListStore?: IFieldListStore;
-  gameStore?: IGameStore;
   routerStore?: IRouterStore;
   websocketStore?: IWebsocketStore;
   getSubscribedStores(message: string): IEventListenerStore[];
@@ -26,14 +24,14 @@ const hydrate = create({
 
 export class RootStore implements IRootStore {
   authStore: AuthStore = new AuthStore(this);
+  createPollStore: CreatePollStore = new CreatePollStore(this);
   eventSubscriptionStore: EventSubscriptionStore = new EventSubscriptionStore(this);
-  fieldListStore: FieldListStore = new FieldListStore(this);
-  gameStore: GameStore = new GameStore(this);
   routerStore: RouterStore = new RouterStore(this);
   websocketStore: WebsocketStore = new WebsocketStore(this);
 
   constructor() {
     hydrate('authentication', this.authStore);
+    hydrate('createpoll', this.createPollStore);
   }
 
   public getSubscribedStores(messageType: string): IEventListenerStore[] {

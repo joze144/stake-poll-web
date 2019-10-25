@@ -1,12 +1,4 @@
-import axios from 'axios';
-
-const getInstance = () => {
-  const instance = axios.create({
-    baseURL: 'http://localhost:4000/',
-  });
-  instance.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
-  return instance;
-};
+import { getInstance } from '../httpService';
 
 export const verifySignMessage = ({data, sig, publicAddress}: SignData) => {
   const instance = getInstance();

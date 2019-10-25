@@ -28,9 +28,11 @@
     "mobx-persist": "^0.4.1",
     "mobx-react": "^6.1.1",
     "node-sass": "^4.12.0",
+    "phoenix-types": "^0.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "react-vis-types": "^0.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

@@ -19,9 +19,9 @@ interface HeaderProps {
 
 const styles = () => ({
   root: {
-    color: 'black',
-    background: 'white',
-    boxShadow: '0 5px 2px -2px #777',
+    color: 'white',
+    background: '#24292e',
+    boxShadow: '0 2px 1px -1px #777',
     padding: '0 10px',
     flexGrow: 1,
   },
@@ -47,8 +47,7 @@ class Header extends Component<HeaderProps> {
     if (loggedIn) {
       leftButtons = (
         <div>
-          <LeftButton key={v4()} title="Crypto Ships" navigate={this._navigate} path="/" />
-          <LeftButton key={v4()} title="Game" navigate={this._navigate} path="/game" />
+          <LeftButton key={v4()} title="Stake Poll" navigate={this._navigate} path="/" />
         </div>
       );
       rightButtons = (
@@ -61,8 +60,7 @@ class Header extends Component<HeaderProps> {
     } else {
       leftButtons = (
         <div>
-          <LeftButton key={v4()} title="Crypto Ships" navigate={this._navigate} path="/" />
-          <LeftButton key={v4()} title="Game" navigate={this._navigate} path="/game" />
+          <LeftButton key={v4()} title="Stake Poll" navigate={this._navigate} path="/" />
         </div>
       );
       rightButtons = (

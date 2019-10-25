@@ -28,7 +28,7 @@ export default function InstallMetaMask({onLogin}: InstallMetaMaskProps) {
     <Card className={classes.card}>
       <CardActionArea onClick={() => onLogin()}>
         <CardContent>
-          <img className="meta-mask-img" src={ require('../../images/metamask.png') } />
+          <img className="meta-mask-img" src="https://cdn-sgp.selectdc.net/a9419475-f6d3-11e9-aee6-b26519d963ec.png" />
         </CardContent>
       </CardActionArea>
     </Card>

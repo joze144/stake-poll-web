@@ -37,7 +37,7 @@ export default function LoginWithMetamaskIcon({text, onLogin}: LoginWithMetamask
       <CardActionArea onClick={() => onLogin()}>
         <CardMedia
           className={classes.image}
-          image="/src/images/metaH.png"
+          image="https://cdn-sgp.selectdc.net/724a2fc8-f6d3-11e9-aee6-b26519d963ec.png"
           title={text}
         />
         <div className={classes.details}>
