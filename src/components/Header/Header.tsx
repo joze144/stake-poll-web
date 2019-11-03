@@ -6,10 +6,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { IRouterStore } from '../Router/routerStore';
-import LeftButton from './LeftButton';
 import Title from './Title';
 import { withStyles } from '@material-ui/core';
 import HideOnScroll from './HideOnScroll';
+import LogoSvg from './LogoSvg';
+import Link from '@material-ui/core/Link/Link';
 
 interface HeaderProps {
   authStore?: IAuthStore;
@@ -42,33 +43,30 @@ class Header extends Component<HeaderProps> {
   render() {
     const loggedIn = this.props.authStore!.loggedId;
 
-    let leftButtons;
-    let rightButtons;
+    let toolbar;
     if (loggedIn) {
-      leftButtons = (
-        <div>
-          <LeftButton key={v4()} title="Stake Poll" navigate={this._navigate} path="/" />
-        </div>
-      );
-      rightButtons = (
-        <div>
+      toolbar = (
+        <Toolbar>
+          <Link href="#" onClick={() => this._navigate('/')} color="inherit">
+            <LogoSvg />
+          </Link>
+          <Title key={v4()} />
           <Button color="inherit" onClick={() => this._navigate('/login')}>
             Logout
           </Button>
-        </div>
+        </Toolbar>
       );
     } else {
-      leftButtons = (
-        <div>
-          <LeftButton key={v4()} title="Stake Poll" navigate={this._navigate} path="/" />
-        </div>
-      );
-      rightButtons = (
-        <div>
+      toolbar = (
+        <Toolbar>
+          <Link href="#" onClick={() => this._navigate('/')} color="inherit">
+            <LogoSvg />
+          </Link>
+          <Title key={v4()} />
           <Button color="inherit" onClick={() => this._navigate('/login')}>
             Login
           </Button>
-        </div>
+        </Toolbar>
       );
     }
 
@@ -76,11 +74,7 @@ class Header extends Component<HeaderProps> {
       <React.Fragment>
         <HideOnScroll {...this.props}>
           <AppBar className={this.props.classes.root}>
-            <Toolbar>
-              {leftButtons}
-              <Title key={v4()} />
-              {rightButtons}
-            </Toolbar>
+            {toolbar}
           </AppBar>
         </HideOnScroll>
         <Toolbar />

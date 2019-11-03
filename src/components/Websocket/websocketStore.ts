@@ -1,19 +1,22 @@
 import { action, observable } from 'mobx';
 
 import { RootStore } from '../rootStore';
-
-import { Message } from './events/Message';
 import { IncomingMessage } from '../IncomingMessage';
 
+import {config} from '../../config/config';
+
 export interface IWebsocketStore {
-  websocket: WebSocket | null;
+  websocket: any;
   connected: boolean;
   startedTime: number;
   connectedIn: number;
+  WSEndpoint: string;
   setConnected(): void;
   setDisconnected(): void;
   sendMessage(message: object): boolean;
   onMessage(message: IncomingMessage): void;
+  connectToTopic(topic: string): void;
+  disconnectFromTopic(topic: string): void;
 }
 
 export class WebsocketStore implements IWebsocketStore {
@@ -22,40 +25,22 @@ export class WebsocketStore implements IWebsocketStore {
     this.rootStore = rootStore;
   }
 
-  @observable websocket: WebSocket | null = null;
+  @observable websocket: any = null;
   @observable connected: boolean = false;
   @observable startedTime: number = 0;
   @observable connectedIn: number = 0;
+  @observable WSEndpoint: string = config.wsUrl;
 
-  @observable messageQueue: IncomingMessage[] = [];
-
-  private pushToQueue(message: IncomingMessage): void {
-    this.messageQueue = this.messageQueue.filter((qMessage: IncomingMessage) => {
-      return qMessage.messageType !== message.messageType;
-    });
-    this.messageQueue.push(message);
+  @action
+  connectToTopic(topic: string): void {
   }
 
-  private sendMessagesFromQueue() {
-    while (this.messageQueue.length > 0 && this.connected) {
-      const message = this.messageQueue.shift();
-      if (message) {
-        this.sendMessage(message);
-      }
-    }
+  @action
+  disconnectFromTopic(topic: string): void {
   }
 
   public sendMessage(message: IncomingMessage): boolean {
-    if (!this.connected || !this.websocket) {
-      this.pushToQueue(message);
-      return false;
-    }
-    let authHeader = this.rootStore.authStore!.getAuthorizationHeader;
-    const headers = { authHeader, messageType: message.messageType };
-    const payload = new Message(message, headers);
-
-    console.log(payload);
-    this.websocket!.send(JSON.stringify(payload));
+    console.log(message);
     return true;
   }
 
@@ -79,7 +64,6 @@ export class WebsocketStore implements IWebsocketStore {
   public setConnected(): void {
     this.connected = true;
     this.connectedIn = new Date().getTime() - this.startedTime;
-    this.sendMessagesFromQueue();
   }
 
   @action

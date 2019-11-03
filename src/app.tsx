@@ -16,7 +16,7 @@ import WithRouterStore from './components/Router/WithRouterStore';
 import Header from './components/Header/Header';
 import { CssBaseline } from '@material-ui/core';
 import Connected from './components/Websocket/Connected';
-import PollResults from './components/PollViewer/PollResults';
+import PollViewerContainer from './components/PollViewer/PollViewerContainer';
 
 const stores = createStores();
 
@@ -32,7 +32,7 @@ render(
           <Switch>
             <Route path="/" exact component={WithRouterStore(stores.routerStore)(Home)} />
             <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
-            <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollResults)} />
+            <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
             <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
           </Switch>
         </div>

@@ -88,7 +88,7 @@ class Login extends Component<LoginProps, LoginState> {
     }
 
     return (
-      <Container className="pt-10" component="main" maxWidth="xs">
+      <Container className="pt-50" component="main" maxWidth="xs">
         <div>
           <Box component="span" m={1}>
             {form}

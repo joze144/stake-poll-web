@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea/CardActionArea';
+import MetamaskIcon from './MetamaskIcon';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,11 +36,7 @@ export default function LoginWithMetamaskIcon({text, onLogin}: LoginWithMetamask
   return (
     <Card className={classes.card}>
       <CardActionArea onClick={() => onLogin()}>
-        <CardMedia
-          className={classes.image}
-          image="https://cdn-sgp.selectdc.net/724a2fc8-f6d3-11e9-aee6-b26519d963ec.png"
-          title={text}
-        />
+        <MetamaskIcon />
         <div className={classes.details}>
           <CardContent>
             <Typography component="h5" variant="h5">

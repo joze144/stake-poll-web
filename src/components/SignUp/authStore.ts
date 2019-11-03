@@ -6,6 +6,10 @@ import { fetchWallet, fetchWalletData, hasProvider, signMessage, verifySignMessa
 
 const TWO_SECONDS = 2000;
 
+interface AuthHeader {
+  Authorization: string;
+}
+
 export interface IAuthStore {
   userId: string;
   publicAddress: string;
@@ -13,8 +17,8 @@ export interface IAuthStore {
   loggedId: boolean;
   metamaskConnected: boolean;
   hasWallet: boolean;
-  getAuthorizationHeader: string;
-  setUser(userId: string, jwtToken: string): void;
+  getAuthorizationHeader: AuthHeader;
+  hydrated: boolean;
   logout(): void;
   checkWeb3Accounts(): void;
   fetchWeb3Accounts(): void;
@@ -35,24 +39,14 @@ export class AuthStore implements IAuthStore {
   @persist @observable hasWallet: boolean = false;
   @persist @observable metamaskConnected: boolean = false;
   @persist @observable jwtToken: string = '';
+  @observable hydrated: boolean = false;
 
   @computed
-  public get getAuthorizationHeader(): string {
+  public get getAuthorizationHeader(): AuthHeader {
     if (!this.jwtToken || this.jwtToken === '') {
-      return '';
+      return { Authorization: '' };
     }
-    return this.jwtToken;
-  }
-
-  @action
-  setUser(userId: string, jwtToken: string): void {
-    if (!userId || userId === '' || !jwtToken || jwtToken === '') {
-      return;
-    }
-
-    this.userId = userId;
-    this.jwtToken = jwtToken;
-    this.loggedId = true;
+    return { Authorization: this.jwtToken };
   }
 
   @action

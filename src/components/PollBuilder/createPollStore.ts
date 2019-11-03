@@ -57,7 +57,6 @@ export class CreatePollStore implements ICreatePollStore {
 
   @action
   removeOption(optionId: string): void {
-    console.log(optionId);
     this.options = this.options.filter(({id}) => {
       return id !== optionId;
     });
@@ -99,7 +98,7 @@ export class CreatePollStore implements ICreatePollStore {
     try {
       const pollId = v4();
       store.loading = true;
-      yield createPoll(store.rootStore.authStore.jwtToken, v4(), store.title, store.options);
+      yield createPoll(store.rootStore.authStore.jwtToken, pollId, store.title, store.options);
       store.title = "";
       store.options = [];
       store.newOptionContent = "";

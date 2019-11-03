@@ -13,5 +13,5 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Title() {
   const classes = useStyles();
 
-  return <Typography variant="h6" className={classes.title}></Typography>;
+  return <Typography variant="h6" className={classes.title} />;
 }
