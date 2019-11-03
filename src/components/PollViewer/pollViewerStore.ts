@@ -100,7 +100,7 @@ export class PollViewerStore implements IPollViewerStore {
       let options = [];
       for (let n = 0; n < data.poll_options.length; n++) {
         const {poll_option_id, content, vote_percentage, vote_weight} = data.poll_options[n];
-        options.push(new PollOptionResult(poll_option_id, content, vote_weight, vote_percentage));
+        options.push(new PollOptionResult(poll_option_id, content, vote_weight, parseFloat(vote_percentage)));
       }
       store.options = options;
 
@@ -125,14 +125,13 @@ export class PollViewerStore implements IPollViewerStore {
     store.loadingVote = true;
     try {
       const data = yield voteOnPoll(store.pollId, pollOption.id, store.rootStore.authStore.jwtToken);
-      console.log(data);
       store.pollId = data.poll_id;
       store.title = data.title;
 
       let options = [];
       for (let n = 0; n < data.poll_options.length; n++) {
         const {poll_option_id, content, vote_percentage, vote_weight} = data.poll_options[n];
-        options.push(new PollOptionResult(poll_option_id, content, vote_weight, vote_percentage));
+        options.push(new PollOptionResult(poll_option_id, content, vote_weight, parseFloat(vote_percentage)));
       }
       store.options = options;
 

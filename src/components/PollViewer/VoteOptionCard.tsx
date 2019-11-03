@@ -12,7 +12,21 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
     card: props => ({
       display: 'flex',
       minWidth: 275,
-      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 5)) + '%)',
+      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 2)) + '%)',
+      marginTop: '5px',
+    }),
+    cardNoResults: {
+      display: 'flex',
+      minWidth: 275,
+      marginTop: '5px',
+    },
+    cardChosen: props => ({
+      display: 'flex',
+      minWidth: 275,
+      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 2)) + '%)',
+      marginTop: '5px',
+      borderStyle: 'solid',
+      borderWidth: '2px 2px 2px 2px',
     }),
     content: {
       flex: '1 0 auto',
@@ -22,20 +36,23 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
 
 interface VoteOptionCardProps {
   id: string,
+  canVote: boolean;
   content: string;
   chosen: boolean;
+  hideResults: boolean;
   percentage: number;
   vote(optionId: string): void;
 }
 
 export default function VoteOptionCard(props: VoteOptionCardProps) {
-  const {id, chosen, content, vote} = props;
+  const {id, canVote, chosen, content, hideResults, vote} = props;
   const classes = useStyles(props);
-
+  const cardStyle = hideResults ? classes.cardNoResults : chosen ? classes.cardChosen : classes.card;
+  const title = canVote ? "Vote" : "Result";
   return (
-    <Tooltip title="Vote">
-      <Card className={classes.card}>
-        <CardActionArea onClick={() => vote(id)}>
+    <Tooltip title={title}>
+      <Card className={cardStyle}>
+        <CardActionArea onClick={() => vote(id)} disabled={!canVote}>
           <CardContent className={classes.content}>
             <Typography component="h5" variant="h5">
               {content}

@@ -13,12 +13,6 @@ const useStyles = makeStyles(() =>
       width: 300,
       textAlign: 'center',
     },
-    image: {
-      display: 'block',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      height: 200,
-    },
     details: {
       textAlign: 'center',
     },

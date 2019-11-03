@@ -12,6 +12,7 @@ import PollVote from './PollVote';
 import PollNotFound from './PollNotFound';
 import { IAuthStore } from '../SignUp/authStore';
 import { IWebsocketStore } from '../Websocket/websocketStore';
+import Button from '@material-ui/core/Button/Button';
 
 interface MatchParams {
   id: string;
@@ -25,6 +26,7 @@ interface PollViewerContainerProps extends RouteComponentProps<MatchParams> {
 
 interface PollViewerContainerState extends IEventSubscriptionState {
   id: string;
+  showResults: boolean;
 }
 
 @inject('authStore', 'pollViewerStore', 'websocketStore')
@@ -36,6 +38,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     this.state = {
       id: id,
       componentId: v4(),
+      showResults: false,
     }
   }
 
@@ -54,6 +57,10 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     this.props.pollViewerStore!.voteOnPoll(pollOptionId);
   };
 
+  _showResults = () => {
+    this.setState({showResults: true});
+  };
+
   render() {
     const loading = this.props.pollViewerStore!.loading;
     const noPoll = this.props.pollViewerStore!.noPoll;
@@ -64,6 +71,9 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const chosenOption = this.props.pollViewerStore!.chosenOption;
     const chosenOptionId = chosenOption ? chosenOption.id : null;
 
+    const hideResults = !voted && loggedIn && !this.state.showResults;
+    const canVote = loggedIn && !voted;
+
     let content;
     if (loading) {
       content = (<Box textAlign="center">
@@ -71,16 +81,17 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
       </Box>)
     } else if (noPoll) {
       content = (<PollNotFound />);
-    } else if (!voted) {
+    } else if (hideResults) {
       content = (
         <Box>
-          <PollVote canVote={true} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
+          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
+          <Button className="btn-s" variant="contained" color="primary" onClick={this._showResults}>See results</Button>
         </Box>
       )
     } else {
       content = (
         <Box>
-          <PollVote canVote={false} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
+          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
           <PollResults title={title} options={options} chosenOption={chosenOption} />
         </Box>
       )

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function MetamaskIcon() {
-  return (<svg width="100%" height="200px" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 318.6 318.6">
+  return (<svg width="100%" height="227px" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 318.6 318.6">
       <polygon className="st0" points="274.1,35.5 174.6,109.4 193,65.8 "/>
       <g>
         <polygon className="st1" points="44.4,35.5 143.1,110.1 125.6,65.8 	"/>
