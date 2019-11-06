@@ -5,8 +5,6 @@ import { IncomingMessage } from '../IncomingMessage';
 import { PollOption } from '../PollBuilder/createPollStore';
 import { fetchPollData, voteOnPoll } from './pollViewerService';
 
-const SUBSCRIBED_EVENTS: Array<string> = ['poll_results'];
-
 export class PollOptionResult {
   id: string;
   content: string;
@@ -81,12 +79,32 @@ export class PollViewerStore implements IPollViewerStore {
 
   @computed
   public get getSubscribedEvents(): string[] {
-    return SUBSCRIBED_EVENTS;
+    return ['poll_update' + this.pollId];
   }
 
   @action
   handleMessage(message: IncomingMessage): void {
+    console.log("message in store!");
     console.log(message);
+    this.pollId = message.poll_id;
+    this.title = message.title;
+    this.options = PollViewerStore.parseOptions(message.poll_options);
+  }
+
+  private static parseOptions(rawOptions: Array<any>): Array<PollOptionResult> {
+    let options = [];
+    for (let n = 0; n < rawOptions.length; n++) {
+      const {poll_option_id, content, vote_percentage, vote_weight} = rawOptions[n];
+      options.push(new PollOptionResult(poll_option_id, content, vote_weight, parseFloat(vote_percentage)));
+    }
+    return options;
+  }
+
+  private static parseUserOption(rawOptions: Array<any>, userVote: string | null): PollOptionResult | null {
+    if (!userVote) {
+      return null;
+    }
+    return rawOptions.find(({poll_option_id}) => poll_option_id === userVote);
   }
 
   fetchPollFlow = flow(function* (store: PollViewerStore): any {
@@ -96,20 +114,8 @@ export class PollViewerStore implements IPollViewerStore {
       const data = yield fetchPollData(store.pollId, store.rootStore.authStore.jwtToken);
       store.pollId = data.poll_id;
       store.title = data.title;
-
-      let options = [];
-      for (let n = 0; n < data.poll_options.length; n++) {
-        const {poll_option_id, content, vote_percentage, vote_weight} = data.poll_options[n];
-        options.push(new PollOptionResult(poll_option_id, content, vote_weight, parseFloat(vote_percentage)));
-      }
-      store.options = options;
-
-      if (data.user_vote) {
-        const userOption = options.find(({id}) => id === data.user_vote);
-        if (userOption) {
-          store.chosenOption = userOption;
-        }
-      }
+      store.options = PollViewerStore.parseOptions(data.poll_options);
+      store.chosenOption = PollViewerStore.parseUserOption(data.poll_options, data.user_vote);
       store.loading = false;
     } catch (e) {
       store.loading = false;
@@ -127,20 +133,10 @@ export class PollViewerStore implements IPollViewerStore {
       const data = yield voteOnPoll(store.pollId, pollOption.id, store.rootStore.authStore.jwtToken);
       store.pollId = data.poll_id;
       store.title = data.title;
-
-      let options = [];
-      for (let n = 0; n < data.poll_options.length; n++) {
-        const {poll_option_id, content, vote_percentage, vote_weight} = data.poll_options[n];
-        options.push(new PollOptionResult(poll_option_id, content, vote_weight, parseFloat(vote_percentage)));
-      }
-      store.options = options;
-
-      if (data.user_vote) {
-        const userOption = options.find(({id}) => id === data.user_vote);
-        if (userOption) {
-          store.chosenOption = userOption;
-        }
-      }
+      store.pollId = data.poll_id;
+      store.title = data.title;
+      store.options = PollViewerStore.parseOptions(data.poll_options);
+      store.chosenOption = PollViewerStore.parseUserOption(data.poll_options, data.user_vote);
       store.loadingVote = false;
     } catch (e) {
       store.loadingVote = false;

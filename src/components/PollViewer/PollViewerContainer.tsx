@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { v4 } from 'uuid';
 import { IPollViewerStore } from './pollViewerStore';
-import { IEventSubscriptionState } from '../EventSubscription/IEventSubscriptionComponent';
 import Container from '@material-ui/core/Container/Container';
 import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box/Box';
@@ -24,7 +22,7 @@ interface PollViewerContainerProps extends RouteComponentProps<MatchParams> {
   websocketStore?: IWebsocketStore;
 }
 
-interface PollViewerContainerState extends IEventSubscriptionState {
+interface PollViewerContainerState {
   id: string;
   showResults: boolean;
 }
@@ -37,9 +35,8 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const id = this.props.match.params.id;
     this.state = {
       id: id,
-      componentId: v4(),
       showResults: false,
-    }
+    };
   }
 
   componentDidMount(): void {
@@ -48,9 +45,11 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     } else {
       this.props.pollViewerStore!.setPollId(this.state.id);
     }
+    this.props.websocketStore!.joinPollChannel();
   }
 
   componentWillUnmount(): void {
+    this.props.websocketStore!.leavePollChannel();
   }
 
   _voteOnPoll = (pollOptionId: string) => {
@@ -83,14 +82,14 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
       content = (<PollNotFound />);
     } else if (hideResults) {
       content = (
-        <Box>
+        <Box className="just-center box-cool" alignItems="center" p={2}>
           <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
           <Button className="btn-s" variant="contained" color="primary" onClick={this._showResults}>See results</Button>
         </Box>
       )
     } else {
       content = (
-        <Box>
+        <Box className="just-center box-cool" alignItems="center" p={2}>
           <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
           <PollResults title={title} options={options} chosenOption={chosenOption} />
         </Box>

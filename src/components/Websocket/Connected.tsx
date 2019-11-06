@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { action } from 'mobx';
 import { IWebsocketStore } from './websocketStore';
 import ConnectedSnackbar from './ConnectedSnackbar';
 
@@ -14,11 +13,6 @@ class Connected extends Component<ConnectedProps> {
   constructor(props: ConnectedProps) {
     super(props);
   }
-
-  @action
-  action = () => {
-    this.props.websocketStore!.sendMessage({ messageType: 'ping' });
-  };
 
   render() {
     const timer = this.props.websocketStore!.connected ? this.props.websocketStore!.connectedIn : 0;

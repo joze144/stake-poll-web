@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Socket } from 'phoenix';
+import { Channel, Socket } from 'phoenix';
 import { IWebsocketStore } from './websocketStore';
 
 import { IAuthStore } from '../SignUp/authStore';
+import { IPollViewerStore } from '../PollViewer/pollViewerStore';
+import { observable } from 'mobx';
 
 interface PhoenixWSProps {
   authStore?: IAuthStore;
+  pollViewerStore?: IPollViewerStore;
   websocketStore?: IWebsocketStore;
 }
 
-@inject('authStore', 'websocketStore')
+@inject('authStore', 'pollViewerStore', 'websocketStore')
 @observer
 class PhoenixWS extends Component<PhoenixWSProps, {}> {
   constructor(props: PhoenixWSProps) {
     super(props);
     this.props.websocketStore!.setDisconnected();
     this.props.websocketStore!.websocket = new Socket(this.props.websocketStore!.WSEndpoint, {
+      params: {token: this.props.authStore!.jwtToken},
       reconnectAfterMs: (tries: number) => {
         return [1000, 2000, 3000][tries - 1] || 3000;
       },
@@ -24,40 +28,41 @@ class PhoenixWS extends Component<PhoenixWSProps, {}> {
     });
   }
 
+  @observable pollChannel: Channel | null = null;
+
   setupWebsocket() {
     let websocket = this.props.websocketStore!.websocket;
 
-    websocket.onOpen(this.onOpen);
-    websocket.onMessage(this.onMessage);
-    websocket.onClose(this.onClose);
-    websocket.onError(this.onError);
-    websocket.connect({ token: this.props.authStore!.jwtToken });
+    websocket!.onOpen(this.onOpen);
+    websocket!.onMessage(this.onMessage);
+    websocket!.onClose(this.onClose);
+    websocket!.onError(this.onError);
+    websocket!.connect();
   }
 
   componentDidMount() {
     this.setupWebsocket();
+    this.props.websocketStore!.joinPollChannel();
   }
 
   componentWillUnmount() {
-    this.props.websocketStore!.websocket.close();
+    this.props.websocketStore!.websocket!.disconnect();
   }
 
-  onMessage = (data: any) => {
-    console.log('MESSAGE');
-    console.log(data);
-  };
+  onMessage = () => {};
 
-  onOpen = (i: any) => {
-    console.log(i);
+  onOpen = () => {
     this.props.websocketStore!.setConnected();
+    this.props.websocketStore!.joinPollChannel();
   };
 
-  onClose = (i: any) => {
-    console.log(i);
+  onClose = () => {
+    console.log('Socket Close');
     this.props.websocketStore!.setDisconnected();
   };
 
-  onError = (e: any) => {
+  onError = () => {
+    console.log('Socket Error');
     this.props.websocketStore!.setDisconnected();
   };
 

@@ -4,7 +4,7 @@ import { Provider } from 'mobx-react';
 
 import { createStores } from './components';
 
-import Websocket from './components/Websocket/Websocket';
+import PhoenixWS from './components/Websocket/PhoenixWS';
 
 import './styles/app.scss';
 import { Route, Switch } from 'react-router';
@@ -24,7 +24,7 @@ render(
   <Provider {...stores}>
     <div>
       <CssBaseline />
-      <Websocket url={'wss://skljoc.si/ws'} />
+      <PhoenixWS />
       <Router>
         <div>
           <Header />

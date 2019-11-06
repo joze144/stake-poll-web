@@ -1,22 +1,22 @@
 import { action, observable } from 'mobx';
-
+import { Channel, Socket } from 'phoenix';
 import { RootStore } from '../rootStore';
 import { IncomingMessage } from '../IncomingMessage';
 
-import {config} from '../../config/config';
+import { config } from '../../config/config';
 
 export interface IWebsocketStore {
-  websocket: any;
+  websocket: Socket | null;
   connected: boolean;
   startedTime: number;
   connectedIn: number;
+  pollChannel: Channel | null;
   WSEndpoint: string;
+  joinPollChannel(): void;
+  leavePollChannel(): void;
   setConnected(): void;
   setDisconnected(): void;
   sendMessage(message: object): boolean;
-  onMessage(message: IncomingMessage): void;
-  connectToTopic(topic: string): void;
-  disconnectFromTopic(topic: string): void;
 }
 
 export class WebsocketStore implements IWebsocketStore {
@@ -25,40 +25,33 @@ export class WebsocketStore implements IWebsocketStore {
     this.rootStore = rootStore;
   }
 
-  @observable websocket: any = null;
+  @observable websocket: Socket | null = null;
   @observable connected: boolean = false;
   @observable startedTime: number = 0;
   @observable connectedIn: number = 0;
   @observable WSEndpoint: string = config.wsUrl;
-
-  @action
-  connectToTopic(topic: string): void {
-  }
-
-  @action
-  disconnectFromTopic(topic: string): void {
-  }
+  @observable pollChannel: Channel | null = null;
 
   public sendMessage(message: IncomingMessage): boolean {
+    console.log("Poll Channel Message!");
     console.log(message);
     return true;
   }
 
-  public onMessage(message: IncomingMessage): void {
-    if (!message || !message.messageType) {
+  onMessage = (message: IncomingMessage): void => {
+    if (!message || !message.message_type) {
       console.error('No message type in the payload!');
       console.log(message);
       return;
     }
-    console.log(message);
 
-    // Forward to stores
-    const subscribedStores = this.rootStore.getSubscribedStores(message.messageType);
+    // Forward to subscribed stores
+    const subscribedStores = this.rootStore.getSubscribedStores(message.message_type);
     subscribedStores.map(store => store.handleMessage(message));
 
-    // Forward to components
+    // Forward to subscribed components
     this.rootStore.eventSubscriptionStore!.handleMessage(message);
-  }
+  };
 
   @action
   public setConnected(): void {
@@ -70,5 +63,32 @@ export class WebsocketStore implements IWebsocketStore {
   public setDisconnected(): void {
     this.connected = false;
     this.startedTime = new Date().getTime();
+  }
+
+  @action
+  public joinPollChannel(): void {
+    if (this.rootStore.pollViewerStore!.pollId && this.websocket) {
+      const topic = 'poll:' + this.rootStore.pollViewerStore!.pollId;
+      this.pollChannel = this.websocket.channel(topic, {});
+      this.pollChannel.on('poll_updates', this.onMessage);
+      this.pollChannel
+        .join()
+        .receive('ok', () => {
+        })
+        .receive('error', (e: any) => {
+          console.error("Channel error");
+        })
+        .receive('timeout', () => {
+          console.error('channel timeout');
+        });
+    }
+  }
+
+  @action
+  public leavePollChannel(): void {
+    if (this.pollChannel) {
+      this.pollChannel.leave();
+      this.pollChannel = null;
+    }
   }
 }

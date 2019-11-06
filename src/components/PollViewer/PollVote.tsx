@@ -30,7 +30,7 @@ export default function PollVote({canVote, chosenOptionId, hideResults, options,
   });
 
   return (
-    <Box className="just-center box-cool" alignItems="center" p={2}>
+    <Box>
       <Typography className={classes.topText} component="h5" variant="h5" gutterBottom>
         Question: {title}
       </Typography>
