@@ -17,3 +17,9 @@ Run command `$ yarn analyze` to check the size and content of your bundled file
 ## Test Suite
 
 Run command `$ yarn test` to run test suite
+
+## Docker
+
+Build with `docker build -f Dockerfile -t sample:prod .`
+
+Run docker image `docker run -it -p 80:80 --rm sample:prod`
