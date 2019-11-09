@@ -26,7 +26,7 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
       background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 2)) + '%)',
       marginTop: '5px',
       borderStyle: 'solid',
-      borderWidth: '2px 2px 2px 2px',
+      borderWidth: '1px 1px 1px 1px',
     }),
     content: {
       flex: '1 0 auto',

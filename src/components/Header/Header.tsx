@@ -11,6 +11,8 @@ import HideOnScroll from './HideOnScroll';
 import LogoSvg from './LogoSvg';
 import Link from '@material-ui/core/Link/Link';
 import PersonIcon from '@material-ui/icons/Person';
+import HistoryIcon from '@material-ui/icons/History';
+import Tooltip from '@material-ui/core/Tooltip';
 
 interface HeaderProps {
   authStore?: IAuthStore;
@@ -24,6 +26,9 @@ const styles = () => ({
     padding: '0 10px',
     flexGrow: 1,
   },
+  fab: {
+    margin: 5,
+  }
 });
 
 @inject('authStore', 'routerStore')
@@ -49,9 +54,16 @@ class Header extends Component<HeaderProps> {
             <LogoSvg />
           </Link>
           <Title key={v4()} />
-          <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
-            <PersonIcon />
-          </Link>
+          <Tooltip title="Poll History">
+            <Link className={this.props.classes.fab} component="button" onClick={() => this._navigate('/history')} color="inherit">
+              <HistoryIcon/>
+            </Link>
+          </Tooltip>
+          <Tooltip title="User">
+            <Link className={this.props.classes.fab} component="button" onClick={() => this._navigate('/login')} color="inherit">
+              <PersonIcon />
+            </Link>
+          </Tooltip>
         </Toolbar>
       );
     } else {
@@ -61,9 +73,11 @@ class Header extends Component<HeaderProps> {
             <LogoSvg />
           </Link>
           <Title key={v4()} />
-          <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
-            <PersonIcon />
-          </Link>
+          <Tooltip title="User">
+            <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
+              <PersonIcon />
+            </Link>
+          </Tooltip>
         </Toolbar>
       );
     }

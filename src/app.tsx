@@ -19,6 +19,7 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import theme from './components/theme';
 import './styles/app.scss';
 import CreatePollNew from './components/PollBuilder/CreatePoll';
+import HistoryPage from './components/History/HistoryPage';
 
 const stores = createStores();
 
@@ -36,6 +37,7 @@ render(
               <Route path="/" exact component={WithRouterStore(stores.routerStore)(CreatePollNew)} />
               <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
               <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
+              <Route path="/history" component={WithRouterStore(stores.routerStore)(HistoryPage)} />
               <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
             </Switch>
           </div>

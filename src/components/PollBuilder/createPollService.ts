@@ -2,9 +2,9 @@ import { PollOption } from './createPollStore';
 import { getInstanceWithJWT } from '../httpService';
 
 export function createPoll(jwt: string, pollId: string, title: string, options: Array<PollOption>) {
-  const i2 = getInstanceWithJWT(jwt);
+  const i = getInstanceWithJWT(jwt);
 
-  return i2.post('/poll/create', {
+  return i.post('/poll/create', {
     poll_id: pollId,
     title: title,
     options: options,

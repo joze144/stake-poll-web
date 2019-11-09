@@ -104,7 +104,11 @@ export class PollViewerStore implements IPollViewerStore {
     if (!userVote) {
       return null;
     }
-    return rawOptions.find(({poll_option_id}) => poll_option_id === userVote);
+    const option = rawOptions.find(({poll_option_id}) => poll_option_id === userVote);
+    if (!option) {
+      return null;
+    }
+    return new PollOptionResult(option.poll_option_id, option.content, option.vote_weight, parseFloat(option.vote_percentage));
   }
 
   fetchPollFlow = flow(function* (store: PollViewerStore): any {
@@ -114,8 +118,8 @@ export class PollViewerStore implements IPollViewerStore {
       const data = yield fetchPollData(store.pollId, store.rootStore.authStore.jwtToken);
       store.pollId = data.poll_id;
       store.title = data.title;
-      store.options = PollViewerStore.parseOptions(data.poll_options);
       store.chosenOption = PollViewerStore.parseUserOption(data.poll_options, data.user_vote);
+      store.options = PollViewerStore.parseOptions(data.poll_options);
       store.loading = false;
     } catch (e) {
       store.loading = false;

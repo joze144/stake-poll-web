@@ -114,9 +114,13 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
         </Box>
       )
     } else {
+      const bottomText = loggedIn ? "" : "Log in to vote!";
       top = (<Box textAlign="center">
         <Typography variant="h3" color="textPrimary">
           Question: {title}
+        </Typography>
+        <Typography variant="body1" color="textSecondary" gutterBottom>
+          {bottomText}
         </Typography>
       </Box>);
       content = (

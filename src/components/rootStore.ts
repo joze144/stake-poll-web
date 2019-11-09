@@ -8,11 +8,13 @@ import { EventSubscriptionStore, IEventSubscriptionStore } from './EventSubscrip
 import { IRouterStore, RouterStore } from './Router/routerStore';
 import { CreatePollStore, ICreatePollStore } from './PollBuilder/createPollStore';
 import { IPollViewerStore, PollViewerStore } from './PollViewer/pollViewerStore';
+import { HistoryStore, IHistoryStore } from './History/historyStore';
 
 export interface IRootStore {
   authStore?: IAuthStore;
   createPollStore?: ICreatePollStore;
   eventSubscriptionStore?: IEventSubscriptionStore;
+  historyStore?: IHistoryStore;
   pollViewerStore?: IPollViewerStore;
   routerStore?: IRouterStore;
   websocketStore?: IWebsocketStore;
@@ -28,6 +30,7 @@ export class RootStore implements IRootStore {
   authStore: AuthStore = new AuthStore(this);
   createPollStore: CreatePollStore = new CreatePollStore(this);
   eventSubscriptionStore: EventSubscriptionStore = new EventSubscriptionStore(this);
+  historyStore: HistoryStore = new HistoryStore(this);
   pollViewerStore: PollViewerStore = new PollViewerStore(this);
   routerStore: RouterStore = new RouterStore(this);
   websocketStore: WebsocketStore = new WebsocketStore(this);
@@ -35,6 +38,7 @@ export class RootStore implements IRootStore {
   constructor() {
     hydrate('authentication', this.authStore).then(() => {
       this.authStore.hydrated = true;
+      this.historyStore.loadHistoryOnHydration();
       this.pollViewerStore.loadPollOnHydration();
     });
     hydrate('createpoll', this.createPollStore);

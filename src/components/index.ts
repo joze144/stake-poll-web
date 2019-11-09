@@ -8,6 +8,7 @@ export function createStores() {
     authStore: rootStore.authStore,
     createPollStore: rootStore.createPollStore,
     eventSubscriptionStore: rootStore.eventSubscriptionStore,
+    historyStore: rootStore.historyStore,
     pollViewerStore: rootStore.pollViewerStore,
     routerStore: rootStore.routerStore,
     websocketStore: rootStore.websocketStore,

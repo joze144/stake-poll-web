@@ -54,6 +54,7 @@ export class AuthStore implements IAuthStore {
     this.userId = '';
     this.jwtToken = '';
     this.loggedId = false;
+    this.rootStore.historyStore!.clearHistory();
   }
 
   @action

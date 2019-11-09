@@ -64,7 +64,7 @@ class Login extends Component<LoginProps, {}> {
     return (
       <Container className="pt-50" component="main" maxWidth="xs">
         <div>
-          <Box component="span" m={1}>
+          <Box component="span" p={1}>
             {form}
             {grid}
           </Box>
