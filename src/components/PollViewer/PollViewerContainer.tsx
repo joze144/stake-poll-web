@@ -10,16 +10,25 @@ import PollVote from './PollVote';
 import PollNotFound from './PollNotFound';
 import { IAuthStore } from '../SignUp/authStore';
 import { IWebsocketStore } from '../Websocket/websocketStore';
-import Button from '@material-ui/core/Button/Button';
+import Fab from '@material-ui/core/Fab';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 interface MatchParams {
   id: string;
 }
 
+const styles = () => ({
+  fab: {
+    margin: 5,
+  },
+});
+
 interface PollViewerContainerProps extends RouteComponentProps<MatchParams> {
   authStore?: IAuthStore;
   pollViewerStore?: IPollViewerStore;
   websocketStore?: IWebsocketStore;
+  classes: any;
 }
 
 interface PollViewerContainerState {
@@ -73,35 +82,58 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const hideResults = !voted && loggedIn && !this.state.showResults;
     const canVote = loggedIn && !voted;
 
+    let top;
     let content;
     if (loading) {
-      content = (<Box textAlign="center">
-        <Typography variant="h3" color="textPrimary">Loading...</Typography>
-      </Box>)
+      top = (<Box textAlign="center">
+        <Typography variant="h3" color="textPrimary">
+          Loading...
+        </Typography>
+      </Box>);
+      content = (<span />)
     } else if (noPoll) {
-      content = (<PollNotFound />);
+      top = (<PollNotFound />);
+      content = (<span />);
     } else if (hideResults) {
+      top = (<Box textAlign="center">
+        <Typography variant="h3" color="textPrimary">
+          Question: {title}
+        </Typography>
+        <Typography variant="body1" color="textSecondary" gutterBottom>
+          Vote on the question!
+        </Typography>
+      </Box>);
       content = (
-        <Box className="just-center box-cool" alignItems="center" p={2}>
-          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
-          <Button className="btn-s" variant="contained" color="primary" onClick={this._showResults}>See results</Button>
+        <Box alignItems="center" p={2}>
+          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} voteOnPoll={this._voteOnPoll} />
+          <Box textAlign="center">
+            <Fab color="secondary" aria-label="show more" className={this.props.classes.fab} onClick={this._showResults}>
+              <ExpandMoreIcon />
+            </Fab>
+          </Box>
         </Box>
       )
     } else {
+      top = (<Box textAlign="center">
+        <Typography variant="h3" color="textPrimary">
+          Question: {title}
+        </Typography>
+      </Box>);
       content = (
-        <Box className="just-center box-cool" alignItems="center" p={2}>
-          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} title={title} options={options} voteOnPoll={this._voteOnPoll} />
+        <Box alignItems="center" p={2}>
+          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} voteOnPoll={this._voteOnPoll} />
           <PollResults title={title} options={options} chosenOption={chosenOption} />
         </Box>
       )
     }
 
     return (
-      <Container component="main" maxWidth="md" className="pt-50">
+      <Container component="main" maxWidth="md" className="pt-50 just-center">
+        {top}
         {content}
       </Container>
     )
   }
 }
 
-export default PollViewerContainer;
+export default withStyles(styles)(PollViewerContainer);

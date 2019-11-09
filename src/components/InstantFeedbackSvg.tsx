@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function InstantFeedbackSvg() {
-  return (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 366 112" preserveAspectRatio="xMidYMid meet"
+  return (<svg height="200px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 366 112" preserveAspectRatio="xMidYMid meet"
                className="css-1vhzff3" id="ccgadabb">
       <defs id="SvgjsDefs1265"/>
       <g id="SvgjsG1266" fill="currentColor"/>

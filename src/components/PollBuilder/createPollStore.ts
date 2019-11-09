@@ -18,9 +18,12 @@ export interface ICreatePollStore {
   title: string;
   newOptionContent: string;
   options: Array<PollOption>;
+  step: number;
   error: string;
   loading: boolean;
   addOption(): void;
+  clearAll(): void;
+  confirmTitle(): void;
   removeOption(id: string): void;
   optionChange(content: string): void;
   titleChange(title: string): void;
@@ -39,11 +42,27 @@ export class CreatePollStore implements ICreatePollStore {
   }
 
   @observable type: string = "stake";
+  @persist @observable step: number = 1;
   @persist @observable title: string = "";
   @persist @observable newOptionContent: string = "";
   @persist('list', PollOption) @observable options: Array<PollOption> = [];
   @observable error: string = "";
   @observable loading: boolean = false;
+
+  @action
+  confirmTitle(): void {
+    this.step = 2;
+  }
+
+  @action
+  clearAll(): void {
+    this.step = 1;
+    this.title = "";
+    this.options = [];
+    this.error = "";
+    this.loading = false;
+    this.newOptionContent = "";
+  }
 
   @action
   addOption(): void {
@@ -99,6 +118,7 @@ export class CreatePollStore implements ICreatePollStore {
       const pollId = v4();
       store.loading = true;
       yield createPoll(store.rootStore.authStore.jwtToken, pollId, store.title, store.options);
+      store.step = 1;
       store.title = "";
       store.options = [];
       store.newOptionContent = "";

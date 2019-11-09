@@ -1,43 +1,47 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'mobx-react';
-
-import { createStores } from './components';
-
-import PhoenixWS from './components/Websocket/PhoenixWS';
-
-import './styles/app.scss';
-import { Route, Switch } from 'react-router';
-import Home from './components/Home';
-import Login from './components/SignUp/Login';
-import NotFound from './components/404';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Route, Switch } from 'react-router';
+// Stores
+import { createStores } from './components';
+// Components
+import PhoenixWS from './components/Websocket/PhoenixWS';
 import WithRouterStore from './components/Router/WithRouterStore';
 import Header from './components/Header/Header';
-import { CssBaseline } from '@material-ui/core';
 import Connected from './components/Websocket/Connected';
+import Login from './components/SignUp/Login';
 import PollViewerContainer from './components/PollViewer/PollViewerContainer';
+import NotFound from './components/404';
+// Styles
+import { CssBaseline } from '@material-ui/core';
+import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import theme from './components/theme';
+import './styles/app.scss';
+import CreatePollNew from './components/PollBuilder/CreatePoll';
 
 const stores = createStores();
 
 render(
   <Provider {...stores}>
-    <div>
-      <CssBaseline />
-      <PhoenixWS />
-      <Router>
-        <div>
-          <Header />
-          <Connected />
-          <Switch>
-            <Route path="/" exact component={WithRouterStore(stores.routerStore)(Home)} />
-            <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
-            <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
-            <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
-          </Switch>
-        </div>
-      </Router>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        <CssBaseline />
+        <PhoenixWS />
+        <Router>
+          <div>
+            <Header />
+            <Connected />
+            <Switch>
+              <Route path="/" exact component={WithRouterStore(stores.routerStore)(CreatePollNew)} />
+              <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
+              <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
+              <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
+            </Switch>
+          </div>
+        </Router>
+      </div>
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root'),
 );

@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 
 const useStyles = makeStyles({
   card: {
-    minWidth: 275,
+    minWidth: 250,
     width: '100%',
     marginTop: '5px',
   },

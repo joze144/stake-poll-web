@@ -4,13 +4,13 @@ import { v4 } from 'uuid';
 import { IAuthStore } from '../SignUp/authStore';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import { IRouterStore } from '../Router/routerStore';
 import Title from './Title';
 import { withStyles } from '@material-ui/core';
 import HideOnScroll from './HideOnScroll';
 import LogoSvg from './LogoSvg';
 import Link from '@material-ui/core/Link/Link';
+import PersonIcon from '@material-ui/icons/Person';
 
 interface HeaderProps {
   authStore?: IAuthStore;
@@ -20,8 +20,6 @@ interface HeaderProps {
 
 const styles = () => ({
   root: {
-    color: 'white',
-    background: '#24292e',
     boxShadow: '0 2px 1px -1px #777',
     padding: '0 10px',
     flexGrow: 1,
@@ -47,25 +45,25 @@ class Header extends Component<HeaderProps> {
     if (loggedIn) {
       toolbar = (
         <Toolbar>
-          <Link href="#" onClick={() => this._navigate('/')} color="inherit">
+          <Link component="button" onClick={() => this._navigate('/')} color="inherit">
             <LogoSvg />
           </Link>
           <Title key={v4()} />
-          <Button color="inherit" onClick={() => this._navigate('/login')}>
-            Logout
-          </Button>
+          <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
+            <PersonIcon />
+          </Link>
         </Toolbar>
       );
     } else {
       toolbar = (
         <Toolbar>
-          <Link href="#" onClick={() => this._navigate('/')} color="inherit">
+          <Link component="button" onClick={() => this._navigate('/')} color="inherit">
             <LogoSvg />
           </Link>
           <Title key={v4()} />
-          <Button color="inherit" onClick={() => this._navigate('/login')}>
-            Login
-          </Button>
+          <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
+            <PersonIcon />
+          </Link>
         </Toolbar>
       );
     }

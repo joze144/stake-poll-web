@@ -4,8 +4,8 @@ export default function LogoSvg() {
   return (<svg height="36px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 133 112" preserveAspectRatio="xMidYMid meet"
                className="css-1kt33a3" id="ghabaedd">
       <defs id="SvgjsDefs1975"/>
-      <g id="SvgjsG1976" fill="#cccccc"/>
-      <g id="SvgjsG1977" fill="#f5f5f5"
+      <g id="SvgjsG1976" fill="#000000"/>
+      <g id="SvgjsG1977" fill="#000000"
          transform="matrix(1.0417911890306712,0,0,1.0417911890306712,-0.0012558212880466161,-0.010416163278386648)">
         <g xmlns="http://www.w3.org/2000/svg">
           <path
@@ -1607,14 +1607,14 @@ export default function LogoSvg() {
             transform="translate(-205.23 -32.53)" />
         </g>
       </g>
-      <g id="SvgjsG1978" fill="#f5f5f5"
+      <g id="SvgjsG1978" fill="#000000"
          transform="matrix(0.7601696376396915,0,0,0.7601696376396915,19.512396940502466,19.589212726186766)">
         <g id="SvgjsG1979">
           <path
             d="M28.036,91.512c-0.38,0-0.764-0.104-1.096-0.324c-0.708-0.467-1.048-1.332-0.844-2.155l3.552-14.353H15.872  c-0.944,0-1.764-0.656-1.956-1.584L2,16.368c-0.116-0.556,0.004-1.132,0.34-1.588c0.332-0.456,0.84-0.752,1.404-0.813L91.828,4.5  c0.607-0.072,1.22,0.156,1.648,0.592c0.428,0.436,0.631,1.056,0.547,1.66l-7.836,58.191c-0.136,0.992-0.979,1.736-1.983,1.736  H61.216L29.256,91.1C28.892,91.376,28.464,91.512,28.036,91.512L28.036,91.512z"/>
         </g>
       </g>
-      <g id="SvgjsG1980" fill="#ffffff" transform="matrix(1,0,0,1,133,56)">
+      <g id="SvgjsG1980" fill="#000000" transform="matrix(1,0,0,1,133,56)">
         <path d=""/>
       </g>
     </svg>
