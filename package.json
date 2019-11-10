@@ -19,6 +19,7 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
+    "@nivo/pie": "^0.59.1",
     "@types/phoenix": "^1.4.3",
     "@types/react-router-dom": "^5.1.0",
     "@types/uuid": "^3.4.5",
@@ -32,8 +33,7 @@
     "phoenix": "^1.4.10",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.1.2",
-    "react-vis-types": "^0.0.3"
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

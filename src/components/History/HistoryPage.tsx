@@ -68,7 +68,7 @@ class HistoryPage extends Component<HistoryProps> {
       </Box>
     ) : (<span />);
     return (
-      <Container component="main" maxWidth="md" className="pt-50 just-center">
+      <Container component="main" maxWidth="md" className="pt-40 just-center">
         <Box textAlign="center">
           <Typography variant="h3" color="textPrimary">
             Poll History

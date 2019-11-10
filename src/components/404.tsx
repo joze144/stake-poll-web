@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 class NotFound extends Component<{}, {}> {
   render() {
     return (
-      <Container component="main" maxWidth="lg" className="pt-50">
+      <Container component="main" maxWidth="lg" className="pt-40">
         <svg width="100%" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 313 112" preserveAspectRatio="xMidYMid meet"
              className="css-62r88u" id="abdeeghh">
           <defs id="SvgjsDefs1552"/>

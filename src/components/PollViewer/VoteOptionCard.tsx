@@ -48,7 +48,7 @@ export default function VoteOptionCard(props: VoteOptionCardProps) {
   const {id, canVote, chosen, content, hideResults, percentage, vote} = props;
   const classes = useStyles(props);
   const cardStyle = hideResults ? classes.cardNoResults : chosen ? classes.cardChosen : classes.card;
-  const title = canVote ? "Vote" : percentage + "%";
+  const title = canVote ? "Vote" : hideResults ? "Log in to vote" : percentage + "%";
   return (
     <Tooltip title={title}>
       <Card className={cardStyle}>

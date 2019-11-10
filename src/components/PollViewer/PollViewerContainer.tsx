@@ -13,6 +13,7 @@ import { IWebsocketStore } from '../Websocket/websocketStore';
 import Fab from '@material-ui/core/Fab';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 interface MatchParams {
   id: string;
@@ -79,7 +80,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const chosenOption = this.props.pollViewerStore!.chosenOption;
     const chosenOptionId = chosenOption ? chosenOption.id : null;
 
-    const hideResults = !voted && loggedIn && !this.state.showResults;
+    const hideResults = !voted && !this.state.showResults;
     const canVote = loggedIn && !voted;
 
     let top;
@@ -95,21 +96,24 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
       top = (<PollNotFound />);
       content = (<span />);
     } else if (hideResults) {
+      const bottomText = loggedIn ? "Vote on the question!" : "Log in to vote!";
       top = (<Box textAlign="center">
         <Typography variant="h3" color="textPrimary">
           Question: {title}
         </Typography>
         <Typography variant="body1" color="textSecondary" gutterBottom>
-          Vote on the question!
+          {bottomText}
         </Typography>
       </Box>);
       content = (
         <Box alignItems="center" p={2}>
           <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} voteOnPoll={this._voteOnPoll} />
           <Box textAlign="center">
-            <Fab color="secondary" aria-label="show more" className={this.props.classes.fab} onClick={this._showResults}>
-              <ExpandMoreIcon />
-            </Fab>
+            <Tooltip title="Show results">
+              <Fab color="secondary" aria-label="show more" className={this.props.classes.fab} onClick={this._showResults}>
+                <ExpandMoreIcon />
+              </Fab>
+            </Tooltip>
           </Box>
         </Box>
       )
@@ -132,7 +136,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     }
 
     return (
-      <Container component="main" maxWidth="md" className="pt-50 just-center">
+      <Container component="main" maxWidth="md" className="pt-40 just-center">
         {top}
         {content}
       </Container>

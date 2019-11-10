@@ -1,8 +1,7 @@
 import React from 'react';
-// @ts-ignore
-import * as ReactVis from 'react-vis-types';
 import { PollOptionResult } from './pollViewerStore';
-import { RadialChart, makeVisFlexible } from 'react-vis';
+import { Box } from '@material-ui/core';
+import { ResponsivePie } from '@nivo/pie'
 
 interface PollResultsProps {
   title: string;
@@ -11,19 +10,99 @@ interface PollResultsProps {
 }
 
 export default function PollResults({options, title}: PollResultsProps) {
-  const myData = options.map(({content, percentage}) => {
-    return {angle: percentage, label: content};
-  });
-  const FlexRadialChart = makeVisFlexible(RadialChart);
-  return (
-    <div className="charts">
-      Poll results for poll {title}
+  const data = prepareData(options);
+  const chart = data.length > 0 ? (
+    <ResponsivePie
+      data={data}
+      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+      innerRadius={0.5}
+      padAngle={0.7}
+      cornerRadius={3}
+      colors={{ scheme: 'nivo' }}
+      borderWidth={1}
+      borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.2 ] ] }}
+      radialLabelsSkipAngle={10}
+      radialLabelsTextXOffset={6}
+      radialLabelsTextColor="#333333"
+      radialLabelsLinkOffset={0}
+      radialLabelsLinkDiagonalLength={16}
+      radialLabelsLinkHorizontalLength={24}
+      radialLabelsLinkStrokeWidth={1}
+      radialLabelsLinkColor={{ from: 'color' }}
+      slicesLabelsSkipAngle={10}
+      slicesLabelsTextColor="#333333"
+      animate={true}
+      motionStiffness={90}
+      motionDamping={15}
+      defs={[
+        {
+          id: 'dots',
+          type: 'patternDots',
+          background: 'inherit',
+          color: 'rgba(255, 255, 255, 0.3)',
+          size: 4,
+          padding: 1,
+          stagger: true
+        },
+        {
+          id: 'lines',
+          type: 'patternLines',
+          background: 'inherit',
+          color: 'rgba(255, 255, 255, 0.3)',
+          rotation: -45,
+          lineWidth: 6,
+          spacing: 10
+        }
+      ]}
+      legends={[
+        {
+          anchor: 'bottom',
+          direction: 'row',
+          translateY: 56,
+          itemWidth: 100,
+          itemHeight: 18,
+          itemTextColor: '#999',
+          symbolSize: 18,
+          symbolShape: 'circle',
+          effects: [
+            {
+              on: 'hover',
+              style: {
+                itemTextColor: '#000'
+              }
+            }
+          ]
+        }
+      ]}
+    />
+  ) : (<span />);
 
-      <FlexRadialChart
-        data={myData}
-        width={300}
-        height={300}
-      />
-    </div>
+  return (
+    <Box textAlign="center" alignItems="center" alignContent="center" className="charts">
+      {chart}
+    </Box>
   )
+}
+
+function prepareData(options: Array<PollOptionResult>): any {
+  let n = 0;
+  const filtered = options.map(({content, percentage}) => {
+    n++;
+    return {id: n.toString(), value: percentage, label: content};
+  }).filter(({value}) => value > 0);
+
+  if (filtered.length < 2) {
+    return filtered;
+  }
+
+  const sorted = filtered.sort(({value: v1}, {value: v2}) => {
+    if (v1 > v2) {
+      return 1;
+    }
+    if (v2 > v1) {
+      return -1;
+    }
+    return 0;
+  });
+  return sorted.splice(0, 5);
 }

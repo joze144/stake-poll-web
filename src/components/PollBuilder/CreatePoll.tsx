@@ -148,7 +148,7 @@ class CreatePoll extends Component<CreatePollProps> {
     let progress = loading ? (<LinearProgress variant="query" />) : (<span />);
 
     return (
-      <Container component="main" maxWidth="md" className="pt-50 just-center">
+      <Container component="main" maxWidth="md" className="pt-40 just-center">
         {top}
         <Box alignItems="center">
           {progress}
