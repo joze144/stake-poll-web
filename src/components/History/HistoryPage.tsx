@@ -70,7 +70,7 @@ class HistoryPage extends Component<HistoryProps> {
     return (
       <Container component="main" maxWidth="md" className="pt-40 just-center">
         <Box textAlign="center">
-          <Typography variant="h3" color="textPrimary">
+          <Typography variant="h4" color="textPrimary">
             Poll History
           </Typography>
           <Typography variant="body1" color="textSecondary" gutterBottom>
@@ -78,8 +78,10 @@ class HistoryPage extends Component<HistoryProps> {
           </Typography>
         </Box>
         {progress}
-        {cards}
-        {loadMore}
+        <Box p={2}>
+          {cards}
+          {loadMore}
+        </Box>
       </Container>
     );
   }

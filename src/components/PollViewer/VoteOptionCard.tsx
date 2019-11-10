@@ -12,7 +12,7 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
     card: props => ({
       display: 'flex',
       minWidth: 275,
-      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 2)) + '%)',
+      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
       marginTop: '5px',
     }),
     cardNoResults: {
@@ -23,9 +23,10 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
     cardChosen: props => ({
       display: 'flex',
       minWidth: 275,
-      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 2)) + '%)',
+      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
       marginTop: '5px',
       borderStyle: 'solid',
+      borderColor: '#bf360c',
       borderWidth: '1px 1px 1px 1px',
     }),
     content: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
 
 interface VoteOptionCardProps {
   id: string,
+  index: number;
   canVote: boolean;
   content: string;
   chosen: boolean;
@@ -45,7 +47,7 @@ interface VoteOptionCardProps {
 }
 
 export default function VoteOptionCard(props: VoteOptionCardProps) {
-  const {id, canVote, chosen, content, hideResults, percentage, vote} = props;
+  const {id, index, canVote, chosen, content, hideResults, percentage, vote} = props;
   const classes = useStyles(props);
   const cardStyle = hideResults ? classes.cardNoResults : chosen ? classes.cardChosen : classes.card;
   const title = canVote ? "Vote" : hideResults ? "Log in to vote" : percentage + "%";
@@ -54,8 +56,8 @@ export default function VoteOptionCard(props: VoteOptionCardProps) {
       <Card className={cardStyle}>
         <CardActionArea onClick={() => vote(id)} disabled={!canVote}>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
-              {content}
+            <Typography variant="body1" color="textPrimary">
+              {index}. {content}
             </Typography>
           </CardContent>
         </CardActionArea>

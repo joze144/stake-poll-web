@@ -87,7 +87,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     let content;
     if (loading) {
       top = (<Box textAlign="center">
-        <Typography variant="h3" color="textPrimary">
+        <Typography variant="h4" color="textPrimary">
           Loading...
         </Typography>
       </Box>);
@@ -98,7 +98,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     } else if (hideResults) {
       const bottomText = loggedIn ? "Vote on the question!" : "Log in to vote!";
       top = (<Box textAlign="center">
-        <Typography variant="h3" color="textPrimary">
+        <Typography variant="h4" color="textPrimary">
           Question: {title}
         </Typography>
         <Typography variant="body1" color="textSecondary" gutterBottom>
@@ -120,7 +120,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     } else {
       const bottomText = loggedIn ? "" : "Log in to vote!";
       top = (<Box textAlign="center">
-        <Typography variant="h3" color="textPrimary">
+        <Typography variant="h4" color="textPrimary">
           Question: {title}
         </Typography>
         <Typography variant="body1" color="textSecondary" gutterBottom>

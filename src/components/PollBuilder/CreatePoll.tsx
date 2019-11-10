@@ -73,10 +73,9 @@ class CreatePoll extends Component<CreatePollProps> {
     let grid = null;
     if (step === 1) {
       top = (<Box textAlign="center">
-        <Typography variant="h3" color="textPrimary">
+        <Typography variant="h4" color="textPrimary">
           Ask a Question
         </Typography>
-        <br />
         <Typography variant="body1" color="textSecondary" gutterBottom>
           Get an instant feedback!
         </Typography>
@@ -104,12 +103,12 @@ class CreatePoll extends Component<CreatePollProps> {
       const optionCards = [];
       for (let n = 0; n < options.length; n++) {
         const {id, content} = options[n];
-        optionCards.push(<PollOptionCard key={id} id={id} index={n} content={content} deleteOption={this._deleteOption} />)
+        optionCards.push(<PollOptionCard key={id} id={id} index={n + 1} content={content} deleteOption={this._deleteOption} />)
       }
 
       top = (<Box textAlign="center">
-        <Typography variant="h3" color="textPrimary">
-          {this.props.createPollStore!.title}
+        <Typography variant="h4" color="textPrimary">
+          Question: {this.props.createPollStore!.title}
         </Typography>
         <Typography variant="body1" color="textSecondary" gutterBottom>
           Add Some Options!

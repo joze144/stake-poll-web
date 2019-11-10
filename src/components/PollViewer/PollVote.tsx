@@ -12,13 +12,15 @@ interface PollVoteProps {
 }
 
 export default function PollVote({canVote, chosenOptionId, hideResults, options, voteOnPoll}: PollVoteProps) {
+  let n = 0;
   const optionCards = options.map(({id, content, percentage}: PollOptionResult) => {
+    n++;
     const chosen = !!(chosenOptionId && chosenOptionId === id);
-    return (<VoteOptionCard key={id} canVote={canVote} hideResults={hideResults} percentage={percentage} id={id} chosen={chosen} content={content} vote={voteOnPoll}/>)
+    return (<VoteOptionCard key={id} index={n} canVote={canVote} hideResults={hideResults} percentage={percentage} id={id} chosen={chosen} content={content} vote={voteOnPoll}/>)
   });
 
   return (
-    <Box p={3}>
+    <Box>
       {optionCards}
     </Box>
   )

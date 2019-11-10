@@ -8,15 +8,13 @@ import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 
 const useStyles = makeStyles({
   card: {
+    display: 'flex',
     minWidth: 250,
     width: '100%',
     marginTop: '5px',
   },
-  option: {
-    fontSize: 10,
-  },
   content: {
-    fontSize: 16,
+    flex: '1 0 auto',
   },
 });
 
@@ -34,12 +32,9 @@ export default function PollOptionCard({id, index, content, deleteOption}: PollO
     <Tooltip title="Delete">
       <Card className={classes.card}>
         <CardActionArea onClick={() => deleteOption(id)}>
-          <CardContent>
-            <Typography className={classes.option} color="textSecondary" gutterBottom>
-              Option {index}
-            </Typography>
-            <Typography className={classes.content} variant="body1" color="textPrimary" gutterBottom>
-              {content}
+          <CardContent className={classes.content}>
+            <Typography variant="body1" color="textPrimary" gutterBottom>
+              {index}. {content}
             </Typography>
           </CardContent>
         </CardActionArea>

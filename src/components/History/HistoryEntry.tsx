@@ -33,17 +33,18 @@ interface HistoryEntryProps {
 
 export default function HistoryEntry(props: HistoryEntryProps) {
   const {pollId, title, chosenContent, navigate} = props;
+  let voted = !!chosenContent ? chosenContent : '/';
   const classes = useStyles(props);
   return (
     <Tooltip title={title}>
       <Card className={classes.card}>
         <CardActionArea onClick={() => navigate(pollId)}>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
-              {title}
+            <Typography variant="body1" color="textPrimary">
+              Question: {title}
             </Typography>
             <Typography className={classes.option} color="textSecondary" gutterBottom>
-              You voted: {chosenContent}
+              You voted: {voted}
             </Typography>
           </CardContent>
         </CardActionArea>

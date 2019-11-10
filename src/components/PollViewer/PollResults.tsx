@@ -86,23 +86,8 @@ export default function PollResults({options, title}: PollResultsProps) {
 
 function prepareData(options: Array<PollOptionResult>): any {
   let n = 0;
-  const filtered = options.map(({content, percentage}) => {
+  return options.map(({content, percentage}) => {
     n++;
     return {id: n.toString(), value: percentage, label: content};
   }).filter(({value}) => value > 0);
-
-  if (filtered.length < 2) {
-    return filtered;
-  }
-
-  const sorted = filtered.sort(({value: v1}, {value: v2}) => {
-    if (v1 > v2) {
-      return 1;
-    }
-    if (v2 > v1) {
-      return -1;
-    }
-    return 0;
-  });
-  return sorted.splice(0, 5);
 }
