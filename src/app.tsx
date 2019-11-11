@@ -16,7 +16,7 @@ import NotFound from './components/404';
 // Styles
 import { CssBaseline } from '@material-ui/core';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
-import theme from './components/theme';
+import theme from './components/Theme';
 import './styles/app.scss';
 import CreatePollNew from './components/PollBuilder/CreatePoll';
 import HistoryPage from './components/History/HistoryPage';

@@ -12,7 +12,7 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
     card: props => ({
       display: 'flex',
       minWidth: 275,
-      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
+      background: 'linear-gradient(90deg, #f9683a ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
       marginTop: '5px',
     }),
     cardNoResults: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
     cardChosen: props => ({
       display: 'flex',
       minWidth: 275,
-      background: 'linear-gradient(90deg, #FFC0CB ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
+      background: 'linear-gradient(90deg, #f9683a ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
       marginTop: '5px',
       borderStyle: 'solid',
       borderColor: '#bf360c',
