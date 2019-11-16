@@ -7,12 +7,14 @@ import CardActionArea from '@material-ui/core/CardActionArea/CardActionArea';
 import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import { Theme } from '@material-ui/core';
 
-const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
+const useStyles = makeStyles<Theme, VoteOptionCardProps>(theme => {
   return {
     card: props => ({
       display: 'flex',
       minWidth: 275,
-      background: 'linear-gradient(90deg, #f9683a ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
+      background: 'linear-gradient(90deg, ' + theme.palette.secondary.light + ' ' +
+        props.percentage + '%, ' + theme.palette.primary.main + ' ' +
+        Math.min(100, (props.percentage + 1)) + '%)',
       marginTop: '5px',
     }),
     cardNoResults: {
@@ -20,15 +22,11 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(_theme => {
       minWidth: 275,
       marginTop: '5px',
     },
-    cardChosen: props => ({
-      display: 'flex',
-      minWidth: 275,
-      background: 'linear-gradient(90deg, #f9683a ' + props.percentage + '%, #F5F5F5 ' + Math.min(100, (props.percentage + 1)) + '%)',
-      marginTop: '5px',
+    cardChosen: {
       borderStyle: 'solid',
-      borderColor: '#bf360c',
+      borderColor: theme.palette.secondary.light,
       borderWidth: '1px 1px 1px 1px',
-    }),
+    },
     content: {
       flex: '1 0 auto',
     },
@@ -49,7 +47,7 @@ interface VoteOptionCardProps {
 export default function VoteOptionCard(props: VoteOptionCardProps) {
   const {id, index, canVote, chosen, content, hideResults, percentage, vote} = props;
   const classes = useStyles(props);
-  const cardStyle = hideResults ? classes.cardNoResults : chosen ? classes.cardChosen : classes.card;
+  const cardStyle = hideResults ? classes.cardNoResults : chosen ? [classes.card, classes.cardChosen].join(' ') : classes.card;
   const title = canVote ? "Vote" : hideResults ? "Log in to vote" : percentage + "%";
   return (
     <Tooltip title={title}>
