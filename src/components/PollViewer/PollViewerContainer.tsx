@@ -15,8 +15,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Tooltip from '@material-ui/core/Tooltip';
 // @ts-ignore
-import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
-import LinkRoundedIcon from '@material-ui/icons/LinkRounded';
+import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
+import CopyUrl from './CopyUrl';
 
 interface MatchParams {
   id: string;
@@ -83,6 +83,14 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     this.setState({showResults: true});
   };
 
+  handleFocus = (event: any) => {
+    event.preventDefault();
+    const { target } = event;
+    const extensionStarts = target.value.length;
+    target.focus();
+    target.setSelectionRange(0, extensionStarts);
+  };
+
   render() {
     const loading = this.props.pollViewerStore!.loading;
     const noPoll = this.props.pollViewerStore!.noPoll;
@@ -92,15 +100,36 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const options = this.props.pollViewerStore!.options;
     const chosenOption = this.props.pollViewerStore!.chosenOption;
     const chosenOptionId = chosenOption ? chosenOption.id : null;
+    const url = this.props.pollViewerStore!.url;
 
     const hideResults = !voted && !this.state.showResults;
     const canVote = loggedIn && !voted;
 
-    const url = "https://www.google.com";
-
     let top;
     let content;
-    let share;
+    let share = (
+      <Box>
+        <Typography variant="body1" color="textSecondary">
+          Share it with others:
+        </Typography>
+        <Box className={this.props.classes.flexContainer} textAlign="center" alignItems="center" alignContent="center">
+          <FacebookShareButton className={this.props.classes.shareButton} url={url}>
+            <FacebookIcon
+              size={35}
+              round />
+          </FacebookShareButton>
+          <TwitterShareButton
+            className={this.props.classes.shareButton}
+            url={url}
+            title={title} hashtags={["stakepoll"]} via="stakepoll">
+            <TwitterIcon
+              size={35}
+              round />
+          </TwitterShareButton>
+          <CopyUrl url={url}/>
+        </Box>
+      </Box>);
+
     if (loading) {
       top = (<Box textAlign="center">
         <Typography variant="h4" color="textPrimary">
@@ -135,27 +164,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
           </Box>
         </Box>
       );
-      share = (
-        <Box>
-          <Typography variant="body1" color="textSecondary">
-            Share it with others:
-          </Typography>
-          <Box className={this.props.classes.flexContainer}>
-            <FacebookShareButton className={this.props.classes.shareButton} url={url}>
-              <FacebookIcon
-                size={32}
-                round />
-            </FacebookShareButton>
-            <TwitterShareButton
-              className={this.props.classes.shareButton}
-              url={url}
-              title={title} hashtags={["stakepoll"]} via="stakepoll">
-              <TwitterIcon
-                size={32}
-                round />
-            </TwitterShareButton>
-          </Box>
-        </Box>);
+      share = (<span />);
     } else {
       const bottomText = loggedIn ? "" : "Log in to vote!";
       top = (<Box textAlign="center">
@@ -172,28 +181,6 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
           <PollResults options={options} chosenOption={chosenOption} />
         </Box>
       );
-      share = (
-        <Box>
-          <Typography variant="body1" color="textSecondary">
-            Share it with others:
-          </Typography>
-          <Box className={this.props.classes.flexContainer}>
-            <FacebookShareButton className={this.props.classes.shareButton} url={url}>
-              <FacebookIcon
-                size={32}
-                round />
-            </FacebookShareButton>
-            <TwitterShareButton
-              className={this.props.classes.shareButton}
-              url={url}
-              title={title} hashtags={["stakepoll"]} via="stakepoll">
-              <TwitterIcon
-                size={32}
-                round />
-            </TwitterShareButton>
-            <LinkRoundedIcon size={32} />
-          </Box>
-        </Box>);
     }
 
     return (

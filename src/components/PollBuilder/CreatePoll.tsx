@@ -93,7 +93,7 @@ class CreatePoll extends Component<CreatePollProps> {
         </form>
       </Box>);
 
-      const disabled = !this.props.createPollStore!.title;
+      const disabled = !this.props.createPollStore!.title.trim();
       grid = (<Box textAlign="center">
         <Fab disabled={disabled} color="secondary" aria-label="next" className={this.props.classes.fab} onClick={this._confirmTitle}>
           <NavigateNextIcon />

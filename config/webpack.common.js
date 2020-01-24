@@ -29,7 +29,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 21000,
-              name: 'images/[name]_[hash:7].[ext]',
+              name: 'src/images/[name]_[hash:7].[ext]',
             },
           },
         ],

@@ -66,10 +66,10 @@ export class CreatePollStore implements ICreatePollStore {
 
   @action
   addOption(): void {
-    if (!this.newOptionContent || this.newOptionContent === "") {
+    if (!this.newOptionContent || this.newOptionContent.trim() === "") {
       return;
     }
-    this.options.push(new PollOption(v4(), this.newOptionContent));
+    this.options.push(new PollOption(v4(), this.newOptionContent.trim()));
     this.newOptionContent = "";
     this.error = "";
   }

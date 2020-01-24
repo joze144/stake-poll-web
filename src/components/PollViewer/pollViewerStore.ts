@@ -22,6 +22,7 @@ export interface IPollViewerStore extends IEventListenerStore {
   pollId: string;
   title: string;
   options: Array<PollOptionResult>;
+  url: string;
   chosenOption: PollOptionResult | null;
   loading: boolean;
   loadingVote: boolean;
@@ -41,6 +42,7 @@ export class PollViewerStore implements IPollViewerStore {
   @observable pollId: string = "";
   @observable title: string = "";
   @observable options: Array<PollOptionResult> = [];
+  @observable url: string = "";
   @observable chosenOption: PollOptionResult | null = null;
   @observable loading: boolean = false;
   @observable loadingVote: boolean = false;
@@ -89,6 +91,7 @@ export class PollViewerStore implements IPollViewerStore {
     this.pollId = message.poll_id;
     this.title = message.title;
     this.options = PollViewerStore.parseOptions(message.poll_options);
+    this.url = message.url;
   }
 
   private static parseOptions(rawOptions: Array<any>): Array<PollOptionResult> {
@@ -120,6 +123,7 @@ export class PollViewerStore implements IPollViewerStore {
       store.title = data.title;
       store.chosenOption = PollViewerStore.parseUserOption(data.poll_options, data.user_vote);
       store.options = PollViewerStore.parseOptions(data.poll_options);
+      store.url = data.url;
       store.loading = false;
     } catch (e) {
       store.loading = false;
@@ -140,6 +144,7 @@ export class PollViewerStore implements IPollViewerStore {
       store.pollId = data.poll_id;
       store.title = data.title;
       store.options = PollViewerStore.parseOptions(data.poll_options);
+      store.url = data.url;
       store.chosenOption = PollViewerStore.parseUserOption(data.poll_options, data.user_vote);
       store.loadingVote = false;
     } catch (e) {
