@@ -42,7 +42,6 @@ class PhoenixWS extends Component<PhoenixWSProps, {}> {
 
   componentDidMount() {
     this.setupWebsocket();
-    this.props.websocketStore!.joinPollChannel();
   }
 
   componentWillUnmount() {

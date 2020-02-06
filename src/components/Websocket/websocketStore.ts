@@ -67,7 +67,7 @@ export class WebsocketStore implements IWebsocketStore {
 
   @action
   public joinPollChannel(): void {
-    if (this.rootStore.pollViewerStore!.pollId && this.websocket) {
+    if (this.rootStore.pollViewerStore!.pollId && this.websocket && !this.pollChannel) {
       const topic = 'poll:' + this.rootStore.pollViewerStore!.pollId;
       this.pollChannel = this.websocket.channel(topic, {});
       this.pollChannel.on('poll_updates', this.onMessage);
