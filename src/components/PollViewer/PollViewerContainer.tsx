@@ -35,6 +35,9 @@ const styles = () => ({
   },
   flexContainer: {
     display: 'flex',
+  },
+  firstbox: {
+    flex: '4',
   }
 });
 
@@ -108,7 +111,19 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     let top;
     let content;
     let share = (
-      <Box>
+      <Box className={this.props.classes.flexContainer}>
+        <Box className={this.props.classes.firstbox}>
+          <Typography variant="body1" color="textSecondary">
+            Number of Voters: {this.props.pollViewerStore!.votersNumber}
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            Total Token Amount: {this.props.pollViewerStore!.totalTokenAmount} ETH
+          </Typography>
+          <Typography variant="body1" color="textSecondary">
+            Poll Views: {this.props.pollViewerStore!.viewsNumber}
+          </Typography>
+        </Box>
+        <Box>
         <Typography variant="body1" color="textSecondary">
           Share it with others:
         </Typography>
@@ -127,6 +142,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
               round />
           </TwitterShareButton>
           <CopyUrl url={url}/>
+        </Box>
         </Box>
       </Box>);
 
