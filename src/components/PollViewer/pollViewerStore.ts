@@ -86,8 +86,6 @@ export class PollViewerStore implements IPollViewerStore {
 
   @action
   handleMessage(message: IncomingMessage): void {
-    console.log("message in store!");
-    console.log(message);
     this.pollId = message.poll_id;
     this.title = message.title;
     this.options = PollViewerStore.parseOptions(message.poll_options);
