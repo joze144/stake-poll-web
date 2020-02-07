@@ -22,6 +22,9 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(theme => {
       borderColor: theme.palette.secondary.light,
       borderWidth: '1px 1px 1px 1px',
     },
+    contentNoResults: {
+      flex: '4',
+    },
     content: props => ({
       flex: '4',
       background: 'linear-gradient(90deg, ' + theme.palette.secondary.light + ' ' +
@@ -62,23 +65,43 @@ export default function VoteOptionCard(props: VoteOptionCardProps) {
   const {id, index, canVote, chosen, content, hideResults, percentage, tokenAmount, vote} = props;
   const classes = useStyles(props);
   const cardStyle = hideResults ? classes.cardNoResults : chosen ? [classes.card, classes.cardChosen].join(' ') : classes.card;
+  const contentStyle = hideResults ? classes.contentNoResults : classes.content;
   const title = canVote ? "Vote" : hideResults ? "Log in to vote" : percentage + "%";
-  return (
-    <Tooltip title={title}>
+
+  let card = (
+    <Card className={cardStyle}>
+      <CardActionArea className={classes.button} onClick={() => vote(id)} disabled={!canVote}>
+        <CardContent className={contentStyle}>
+          <Typography variant="body1" color="textPrimary">
+            {index}. {content}
+          </Typography>
+        </CardContent>
+        <CardContent className={classes.cover}>
+          <Typography variant="body1" color="textPrimary">
+            {tokenAmount / 1000} ETH
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  );
+
+  if (hideResults) {
+    card = (
       <Card className={cardStyle}>
-        <CardActionArea className={classes.button} onClick={() => vote(id)} disabled={!canVote}>
-          <CardContent className={classes.content}>
+        <CardActionArea onClick={() => vote(id)} disabled={!canVote}>
+          <CardContent className={contentStyle}>
             <Typography variant="body1" color="textPrimary">
               {index}. {content}
             </Typography>
           </CardContent>
-          <CardContent className={classes.cover}>
-            <Typography variant="body1" color="textPrimary">
-              {tokenAmount / 1000} ETH
-            </Typography>
-          </CardContent>
         </CardActionArea>
       </Card>
+    )
+  }
+
+  return (
+    <Tooltip title={title}>
+      {card}
     </Tooltip>
   )
 }
