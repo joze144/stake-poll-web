@@ -11,7 +11,7 @@ export default function LogoSvg() {
   const classes = useStyles();
   return (
     <div>
-      <svg className={classes.logo} height="60px" width="250px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 133 112" preserveAspectRatio="xMidYMid meet">
+      <svg className={classes.logo} height="60px" width="250px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 112" preserveAspectRatio="xMidYMid meet">
       <g fill="#d2d2d2"/><g fill="#bf360c" transform="matrix(0.7785043786968191,0,0,0.7785043786968191,6.074781065159048,6.074781065159048)">
       <g>
         <g xmlns="http://www.w3.org/2000/svg">

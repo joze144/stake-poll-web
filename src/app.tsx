@@ -20,29 +20,29 @@ import theme from './components/Theme';
 import './styles/app.scss';
 import CreatePollNew from './components/PollBuilder/CreatePoll';
 import HistoryPage from './components/History/HistoryPage';
+import Footer from './components/Footer/Footer';
 
 const stores = createStores();
 
 render(
   <Provider {...stores}>
     <ThemeProvider theme={theme}>
-      <div>
-        <CssBaseline />
-        <PhoenixWS />
-        <Router>
-          <div>
-            <Header />
-            <Connected />
-            <Switch>
-              <Route path="/" exact component={WithRouterStore(stores.routerStore)(CreatePollNew)} />
-              <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
-              <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
-              <Route path="/history" component={WithRouterStore(stores.routerStore)(HistoryPage)} />
-              <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
-            </Switch>
-          </div>
-        </Router>
-      </div>
+      <CssBaseline />
+      <PhoenixWS />
+      <Router>
+        <div className="container-flex">
+          <Header />
+          <Connected />
+          <Switch>
+            <Route path="/" exact component={WithRouterStore(stores.routerStore)(CreatePollNew)} />
+            <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
+            <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
+            <Route path="/history" component={WithRouterStore(stores.routerStore)(HistoryPage)} />
+            <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
+          </Switch>
+        </div>
+        <Footer />
+      </Router>
     </ThemeProvider>
   </Provider>,
   document.getElementById('root'),

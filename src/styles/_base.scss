@@ -30,6 +30,21 @@ body {
   height: 450px;
 }
 
+.container-flex {
+  flex: 1 0 auto;
+  padding: var(--space) var(--space) 0;
+}
+
+.site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.parent-div {
+  height: 100%;
+}
+
 .btn-s {
   border-radius: 3px;
   border: 0;
