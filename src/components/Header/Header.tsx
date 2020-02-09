@@ -13,6 +13,7 @@ import Link from '@material-ui/core/Link/Link';
 import PersonIcon from '@material-ui/icons/Person';
 import HistoryIcon from '@material-ui/icons/History';
 import Tooltip from '@material-ui/core/Tooltip';
+import EthBalance from '../Wallet/EthBalance';
 
 interface HeaderProps {
   authStore?: IAuthStore;
@@ -27,7 +28,7 @@ const styles = () => ({
     flexGrow: 1,
   },
   fab: {
-    margin: 5,
+    margin: 10,
   }
 });
 
@@ -54,6 +55,7 @@ class Header extends Component<HeaderProps> {
             <LogoSvg />
           </Link>
           <Title key={v4()} />
+          <EthBalance />
           <Tooltip title="Poll History">
             <Link className={this.props.classes.fab} component="button" onClick={() => this._navigate('/history')} color="inherit">
               <HistoryIcon/>

@@ -17,6 +17,7 @@ export interface IWebsocketStore {
   setConnected(): void;
   setDisconnected(): void;
   sendMessage(message: object): boolean;
+  connectSocket(): void;
 }
 
 export class WebsocketStore implements IWebsocketStore {
@@ -30,6 +31,7 @@ export class WebsocketStore implements IWebsocketStore {
   @observable startedTime: number = 0;
   @observable connectedIn: number = 0;
   @observable WSEndpoint: string = config.wsUrl;
+  @observable privateChannel: Channel | null = null;
   @observable pollChannel: Channel | null = null;
 
   public sendMessage(message: IncomingMessage): boolean {
@@ -52,6 +54,27 @@ export class WebsocketStore implements IWebsocketStore {
     // Forward to subscribed components
     this.rootStore.eventSubscriptionStore!.handleMessage(message);
   };
+
+  public connectSocket(): void {
+    this.setDisconnected();
+    let token = "";
+    if (this.rootStore.authStore!.jwtToken) {
+      token = this.rootStore.authStore!.jwtToken.split(" ")[1];
+    }
+    this.websocket = new Socket(this.WSEndpoint, {
+      params: {token: token},
+      reconnectAfterMs: (tries: number) => {
+        return [1000, 2000, 3000][tries - 1] || 3000;
+      },
+      heartbeatIntervalMs: 10000,
+    });
+    this.pollChannel = null;
+    this.privateChannel =  null;
+    this.websocket.onOpen(this.onOpen);
+    this.websocket.onClose(this.onClose);
+    this.websocket.onError(this.onError);
+    this.websocket.connect();
+  }
 
   @action
   public setConnected(): void {
@@ -84,6 +107,24 @@ export class WebsocketStore implements IWebsocketStore {
     }
   }
 
+  joinPrivateChannel(): void {
+    if (this.websocket && !this.privateChannel && this.rootStore.authStore.loggedId && this.rootStore.authStore.jwtToken) {
+      const topic = 'private:' + this.rootStore.authStore!.userId;
+      this.privateChannel = this.websocket.channel(topic, {});
+      this.privateChannel.on('balance_update', this.onMessage);
+      this.privateChannel
+        .join()
+        .receive('ok', () => {
+        })
+        .receive('error', (e: any) => {
+          console.error("Channel error");
+        })
+        .receive('timeout', () => {
+          console.error('channel timeout');
+        });
+    }
+  }
+
   @action
   public leavePollChannel(): void {
     if (this.pollChannel) {
@@ -91,4 +132,20 @@ export class WebsocketStore implements IWebsocketStore {
       this.pollChannel = null;
     }
   }
+
+  onOpen = () => {
+    this.setConnected();
+    this.joinPrivateChannel();
+    this.joinPollChannel();
+  };
+
+  onClose = () => {
+    console.log('Socket Close');
+    this.setDisconnected();
+  };
+
+  onError = () => {
+    console.log('Socket Error');
+    this.setDisconnected();
+  };
 }

@@ -11,6 +11,7 @@ export function createStores() {
     historyStore: rootStore.historyStore,
     pollViewerStore: rootStore.pollViewerStore,
     routerStore: rootStore.routerStore,
+    walletStore: rootStore.walletStore,
     websocketStore: rootStore.websocketStore,
   };
 }

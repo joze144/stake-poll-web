@@ -6,7 +6,6 @@ import { Route, Switch } from 'react-router';
 // Stores
 import { createStores } from './components';
 // Components
-import PhoenixWS from './components/Websocket/PhoenixWS';
 import WithRouterStore from './components/Router/WithRouterStore';
 import Header from './components/Header/Header';
 import Connected from './components/Websocket/Connected';
@@ -28,7 +27,6 @@ render(
   <Provider {...stores}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <PhoenixWS />
       <Router>
         <div className="container-flex">
           <Header />

@@ -9,6 +9,7 @@ import { IRouterStore, RouterStore } from './Router/routerStore';
 import { CreatePollStore, ICreatePollStore } from './PollBuilder/createPollStore';
 import { IPollViewerStore, PollViewerStore } from './PollViewer/pollViewerStore';
 import { HistoryStore, IHistoryStore } from './History/historyStore';
+import { WalletStore, IWalletStore } from './Wallet/walletStore';
 
 export interface IRootStore {
   authStore?: IAuthStore;
@@ -17,6 +18,7 @@ export interface IRootStore {
   historyStore?: IHistoryStore;
   pollViewerStore?: IPollViewerStore;
   routerStore?: IRouterStore;
+  walletStore?: IWalletStore;
   websocketStore?: IWebsocketStore;
   getSubscribedStores(message: string): IEventListenerStore[];
 }
@@ -33,20 +35,24 @@ export class RootStore implements IRootStore {
   historyStore: HistoryStore = new HistoryStore(this);
   pollViewerStore: PollViewerStore = new PollViewerStore(this);
   routerStore: RouterStore = new RouterStore(this);
+  walletStore: WalletStore = new WalletStore(this);
   websocketStore: WebsocketStore = new WebsocketStore(this);
 
   constructor() {
     hydrate('authentication', this.authStore).then(() => {
       this.authStore.hydrated = true;
+      this.websocketStore.connectSocket();
       this.historyStore.loadHistoryOnHydration();
       this.pollViewerStore.loadPollOnHydration();
     });
     hydrate('createpoll', this.createPollStore);
+    hydrate('wallet', this.walletStore);
   }
 
   public getSubscribedStores(messageType: string): IEventListenerStore[] {
     let stores = [];
     if (this.pollViewerStore!.getSubscribedEvents.indexOf(messageType) > -1) stores.push(this.pollViewerStore);
+    if (this.walletStore!.getSubscribedEvents.indexOf(messageType) > -1) stores.push(this.walletStore);
 
     return stores;
   }

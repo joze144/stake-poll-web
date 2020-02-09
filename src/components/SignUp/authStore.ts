@@ -3,6 +3,7 @@ import { persist } from 'mobx-persist';
 import { RootStore } from '../rootStore';
 
 import { fetchWallet, fetchWalletData, hasProvider, signMessage, verifySignMessage } from './web3Service';
+import { Balance } from '../Wallet/walletStore';
 
 const TWO_SECONDS = 2000;
 
@@ -55,6 +56,8 @@ export class AuthStore implements IAuthStore {
     this.jwtToken = '';
     this.loggedId = false;
     this.rootStore.historyStore!.clearHistory();
+    this.rootStore.walletStore!.clearWallet();
+    this.rootStore.websocketStore!.connectSocket();
   }
 
   @action
@@ -142,7 +145,12 @@ export class AuthStore implements IAuthStore {
       store.userId = serverResp.id;
       store.publicAddress = serverResp.public_address;
       store.jwtToken = serverResp.jwt_token;
+      const newBalances = serverResp.balances.map(({token_id, balance}: any) => {
+        return new Balance(token_id, balance);
+      });
+      store.rootStore.walletStore.setWalletBalances(newBalances);
       store.loggedId = true;
+      store.rootStore.websocketStore!.connectSocket();
     } catch (e) {
       console.error(e.message)
     }
