@@ -20,6 +20,7 @@ import './styles/app.scss';
 import CreatePollNew from './components/PollBuilder/CreatePoll';
 import HistoryPage from './components/History/HistoryPage';
 import Footer from './components/Footer/Footer';
+import AboutPage from './components/AboutPage';
 
 const stores = createStores();
 
@@ -36,6 +37,7 @@ render(
             <Route path="/login" component={WithRouterStore(stores.routerStore)(Login)} />
             <Route path="/poll/:id" component={WithRouterStore(stores.routerStore)(PollViewerContainer)} />
             <Route path="/history" component={WithRouterStore(stores.routerStore)(HistoryPage)} />
+            <Route path="/about" component={WithRouterStore(stores.routerStore)(AboutPage)} />
             <Route path="*" component={WithRouterStore(stores.routerStore)(NotFound)} />
           </Switch>
         </div>

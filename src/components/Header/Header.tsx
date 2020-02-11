@@ -28,7 +28,7 @@ const styles = () => ({
     flexGrow: 1,
   },
   fab: {
-    margin: 10,
+    margin: '10px',
   }
 });
 

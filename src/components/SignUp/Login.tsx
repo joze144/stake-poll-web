@@ -49,7 +49,7 @@ class Login extends Component<LoginProps, {}> {
           <Link to={'/'}>Back home</Link>
         </Grid>
         <Grid item>
-          <MaterialLink href="https://metamask.io/">{"Install Metamask"}</MaterialLink>
+          <MaterialLink color="textPrimary" href="https://metamask.io/" target="_blank">Install Metamask</MaterialLink>
         </Grid>
       </Grid>);
     } else {

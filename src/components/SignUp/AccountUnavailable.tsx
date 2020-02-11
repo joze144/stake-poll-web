@@ -4,10 +4,10 @@ import { Typography } from '@material-ui/core';
 
 const AccountUnavailable = () => (
   <div>
-    <Typography align="center" component="h5" variant="h4" color="textPrimary">
-      No ETH Account
+    <Typography align="center" component="h5" variant="h5" color="textPrimary">
+      Your browser doesn't have an Ethereum wallet.
     </Typography>
-    <div className="web3-Provider-image mt-20">
+    <div className="web3-Provider-image m-20">
       <IconNoWeb3 />
     </div>
   </div>
