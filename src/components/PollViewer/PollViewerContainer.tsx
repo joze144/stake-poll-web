@@ -17,6 +17,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 // @ts-ignore
 import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 import CopyUrl from './CopyUrl';
+import Switch from '@material-ui/core/Switch';
+import Grid from '@material-ui/core/Grid';
 
 interface MatchParams {
   id: string;
@@ -38,6 +40,9 @@ const styles = () => ({
   },
   firstbox: {
     flex: '4',
+  },
+  noResults: {
+    margin: 100
   }
 });
 
@@ -86,6 +91,10 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     this.setState({showResults: true});
   };
 
+  _changeStakedMode = () => {
+    this.props.pollViewerStore!.setStakedMode(!this.props.pollViewerStore!.stakedMode);
+  };
+
   handleFocus = (event: any) => {
     event.preventDefault();
     const { target } = event;
@@ -101,9 +110,27 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const voted = !!this.props.pollViewerStore!.chosenOption;
     const title = this.props.pollViewerStore!.title;
     const options = this.props.pollViewerStore!.options;
+    const haveResults = options && options.findIndex(({weight}) => weight > 0) > -1;
     const chosenOption = this.props.pollViewerStore!.chosenOption;
     const chosenOptionId = chosenOption ? chosenOption.id : null;
     const url = this.props.pollViewerStore!.url;
+    const stakedResults = this.props.pollViewerStore!.stakedMode;
+    const stakedSwitch = (
+      <Typography className={this.props.classes.fab} component="div" color="textSecondary">
+        <Grid component="label" container alignItems="center" spacing={1}>
+          <Grid item>Normal Results</Grid>
+          <Grid item>
+            <Switch checked={this.props.pollViewerStore!.stakedMode} onChange={this._changeStakedMode} value={stakedResults} />
+          </Grid>
+          <Grid item>Staked Results</Grid>
+        </Grid>
+      </Typography>
+    );
+
+    const pollResultsGraph = haveResults ? (<PollResults stakedResults={stakedResults} options={options} />) :
+      (<Box textAlign="center">
+        <Typography className={this.props.classes.noResults} variant="h4" color="textSecondary">No results to show</Typography>
+      </Box>);
 
     const hideResults = !voted && !this.state.showResults;
     const canVote = loggedIn && !voted;
@@ -170,7 +197,7 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
       </Box>);
       content = (
         <Box alignItems="center" p={2}>
-          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} voteOnPoll={this._voteOnPoll} />
+          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} stakedResults={stakedResults} voteOnPoll={this._voteOnPoll} />
           <Box textAlign="center">
             <Tooltip title="Show results">
               <Fab color="secondary" aria-label="show more" className={this.props.classes.fab} onClick={this._showResults}>
@@ -193,8 +220,9 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
       </Box>);
       content = (
         <Box alignItems="center" p={2}>
-          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} voteOnPoll={this._voteOnPoll} />
-          <PollResults options={options} chosenOption={chosenOption} />
+          <PollVote hideResults={hideResults} canVote={canVote} chosenOptionId={chosenOptionId} options={options} stakedResults={stakedResults} voteOnPoll={this._voteOnPoll} />
+          {stakedSwitch}
+          {pollResultsGraph}
         </Box>
       );
     }

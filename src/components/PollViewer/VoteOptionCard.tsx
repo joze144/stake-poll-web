@@ -31,6 +31,12 @@ const useStyles = makeStyles<Theme, VoteOptionCardProps>(theme => {
         props.percentage + '%, ' + theme.palette.primary.main + ' ' +
         Math.min(100, (props.percentage + 1)) + '%)',
     }),
+    contentNotStaked: props => ({
+      flex: '4',
+      background: 'linear-gradient(90deg, ' + theme.palette.secondary.light + ' ' +
+        props.votersPercentage + '%, ' + theme.palette.primary.main + ' ' +
+        Math.min(100, (props.votersPercentage + 1)) + '%)',
+    }),
     details: {
       display: 'flex',
       flexDirection: 'column',
@@ -55,18 +61,22 @@ interface VoteOptionCardProps {
   content: string;
   chosen: boolean;
   hideResults: boolean;
+  stakedResults: boolean;
   percentage: number;
+  votersPercentage: number;
   tokenAmount: number;
   votersAmount: number;
   vote(optionId: string): void;
 }
 
 export default function VoteOptionCard(props: VoteOptionCardProps) {
-  const {id, index, canVote, chosen, content, hideResults, percentage, tokenAmount, vote} = props;
+  const {id, index, canVote, chosen, content, hideResults, percentage, votersPercentage, stakedResults, tokenAmount, votersAmount, vote} = props;
   const classes = useStyles(props);
   const cardStyle = hideResults ? classes.cardNoResults : chosen ? [classes.card, classes.cardChosen].join(' ') : classes.card;
-  const contentStyle = hideResults ? classes.contentNoResults : classes.content;
-  const title = canVote ? "Vote" : hideResults ? "Log in to vote" : percentage + "%";
+  const contentStyle = hideResults ? classes.contentNoResults : stakedResults ? classes.content : classes.contentNotStaked;
+  const cardPercentage = stakedResults ? percentage : votersPercentage;
+  const title = canVote ? "Vote" : hideResults ? "Log in to vote" : cardPercentage + "%";
+  const amountText = stakedResults ? tokenAmount / 1000 + ' ETH' : [0, 1].indexOf(votersAmount) !== -1 ? votersAmount + ' Vote' : votersAmount + ' Votes';
 
   let card = (
     <Card className={cardStyle}>
@@ -77,8 +87,8 @@ export default function VoteOptionCard(props: VoteOptionCardProps) {
           </Typography>
         </CardContent>
         <CardContent className={classes.cover}>
-          <Typography variant="body1" color="textPrimary">
-            {tokenAmount / 1000} ETH
+          <Typography variant="body1" color="textSecondary">
+            {amountText}
           </Typography>
         </CardContent>
       </CardActionArea>

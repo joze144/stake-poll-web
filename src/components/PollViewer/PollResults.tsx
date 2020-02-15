@@ -4,12 +4,12 @@ import { Box } from '@material-ui/core';
 import { ResponsivePie } from '@nivo/pie'
 
 interface PollResultsProps {
+  stakedResults: boolean;
   options: Array<PollOptionResult>;
-  chosenOption: PollOptionResult | null;
 }
 
-export default function PollResults({options}: PollResultsProps) {
-  const data = prepareData(options);
+export default function PollResults({stakedResults, options}: PollResultsProps) {
+  const data = prepareData(options, stakedResults);
   const chart = data.length > 0 ? (
     <Box textAlign="center" alignItems="center" alignContent="center" className="charts">
     <ResponsivePie
@@ -85,10 +85,13 @@ export default function PollResults({options}: PollResultsProps) {
   )
 }
 
-function prepareData(options: Array<PollOptionResult>): any {
+function prepareData(options: Array<PollOptionResult>, stakedResults: boolean): any {
   let n = 0;
-  return options.map(({content, percentage}) => {
+  return stakedResults ? options.map(({content, percentage}) => {
     n++;
     return {id: n.toString(), value: percentage, label: content};
-  }).filter(({value}) => value > 0);
+  }).filter(({value}) => value > 0) : options.map(({content, percentageVoters}) => {
+    n++;
+    return {id: n.toString(), value: percentageVoters, label: content};
+  }).filter(({value}) => value > 0)
 }

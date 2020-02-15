@@ -7,16 +7,17 @@ interface PollVoteProps {
   canVote: boolean;
   hideResults: boolean;
   options: Array<PollOptionResult>;
+  stakedResults: boolean;
   chosenOptionId: string | null;
   voteOnPoll(pollOptionId: string): void;
 }
 
-export default function PollVote({canVote, chosenOptionId, hideResults, options, voteOnPoll}: PollVoteProps) {
+export default function PollVote({canVote, chosenOptionId, hideResults, options, stakedResults, voteOnPoll}: PollVoteProps) {
   let n = 0;
-  const optionCards = options.map(({id, content, percentage, weight, numberOfVoters}: PollOptionResult) => {
+  const optionCards = options.map(({id, content, percentage, percentageVoters, weight, numberOfVoters}: PollOptionResult) => {
     n++;
     const chosen = !!(chosenOptionId && chosenOptionId === id);
-    return (<VoteOptionCard key={id} index={n} tokenAmount={weight} votersAmount={numberOfVoters} canVote={canVote} hideResults={hideResults} percentage={percentage} id={id} chosen={chosen} content={content} vote={voteOnPoll}/>)
+    return (<VoteOptionCard key={id} index={n} stakedResults={stakedResults} tokenAmount={weight} votersAmount={numberOfVoters} canVote={canVote} hideResults={hideResults} percentage={percentage} votersPercentage={percentageVoters} id={id} chosen={chosen} content={content} vote={voteOnPoll}/>)
   });
 
   return (

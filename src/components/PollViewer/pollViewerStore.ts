@@ -11,12 +11,14 @@ export class PollOptionResult {
   weight: number;
   numberOfVoters: number;
   percentage: number;
-  constructor(id: string, content: string, weight: number, numberOfVoters: number, percentage: number) {
+  percentageVoters: number;
+  constructor(id: string, content: string, weight: number, numberOfVoters: number, percentage: number, percentageVoters: number) {
     this.id = id;
     this.content = content;
     this.weight = weight;
     this.numberOfVoters = numberOfVoters;
     this.percentage = percentage;
+    this.percentageVoters = percentageVoters;
   }
 }
 
@@ -32,10 +34,12 @@ export interface IPollViewerStore extends IEventListenerStore {
   loading: boolean;
   loadingVote: boolean;
   noPoll: boolean;
+  stakedMode: boolean;
   setPollId(pollId: string): void;
   loadNewPoll(pollId: string): void;
   voteOnPoll(pollOptionId: string): void;
   loadPollOnHydration(): void;
+  setStakedMode(isStaked: boolean): void;
 }
 
 export class PollViewerStore implements IPollViewerStore {
@@ -55,6 +59,12 @@ export class PollViewerStore implements IPollViewerStore {
   @observable loading: boolean = false;
   @observable loadingVote: boolean = false;
   @observable noPoll: boolean = false;
+  @observable stakedMode: boolean = true;
+
+  @action
+  setStakedMode(isStaked: boolean): void {
+    this.stakedMode = isStaked;
+  }
 
   @action
   loadPollOnHydration(): void {
@@ -106,8 +116,8 @@ export class PollViewerStore implements IPollViewerStore {
   private static parseOptions(rawOptions: Array<any>): Array<PollOptionResult> {
     let options = [];
     for (let n = 0; n < rawOptions.length; n++) {
-      const {poll_option_id, content, number_of_voters, vote_percentage, vote_weight} = rawOptions[n];
-      options.push(new PollOptionResult(poll_option_id, content, vote_weight, number_of_voters, parseFloat(vote_percentage)));
+      const {poll_option_id, content, number_of_voters, voters_percentage, vote_percentage, vote_weight} = rawOptions[n];
+      options.push(new PollOptionResult(poll_option_id, content, vote_weight, number_of_voters, parseFloat(vote_percentage), parseFloat(voters_percentage)));
     }
     return options;
   }
@@ -120,7 +130,7 @@ export class PollViewerStore implements IPollViewerStore {
     if (!option) {
       return null;
     }
-    return new PollOptionResult(option.poll_option_id, option.content, option.vote_weight, option.number_of_voters, parseFloat(option.vote_percentage));
+    return new PollOptionResult(option.poll_option_id, option.content, option.vote_weight, option.number_of_voters, parseFloat(option.vote_percentage), parseFloat(option.voters_percentage));
   }
 
   fetchPollFlow = flow(function* (store: PollViewerStore): any {

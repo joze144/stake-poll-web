@@ -26,9 +26,6 @@ const styles = () => ({
     boxShadow: '0 2px 1px -1px #777',
     padding: '0 10px',
     flexGrow: 1,
-  },
-  fab: {
-    margin: '10px',
   }
 });
 
@@ -57,14 +54,18 @@ class Header extends Component<HeaderProps> {
           <Title key={v4()} />
           <EthBalance />
           <Tooltip title="Poll History">
-            <Link className={this.props.classes.fab} component="button" onClick={() => this._navigate('/history')} color="inherit">
-              <HistoryIcon/>
-            </Link>
+            <div className="m-10">
+              <Link component="button" onClick={() => this._navigate('/history')} color="inherit">
+                <HistoryIcon/>
+              </Link>
+            </div>
           </Tooltip>
           <Tooltip title="User">
-            <Link className={this.props.classes.fab} component="button" onClick={() => this._navigate('/login')} color="inherit">
-              <PersonIcon />
-            </Link>
+            <div className="m-10">
+              <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
+                <PersonIcon />
+              </Link>
+            </div>
           </Tooltip>
         </Toolbar>
       );
@@ -76,9 +77,11 @@ class Header extends Component<HeaderProps> {
           </Link>
           <Title key={v4()} />
           <Tooltip title="User">
-            <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
-              <PersonIcon />
-            </Link>
+            <div className="m-10">
+              <Link component="button" onClick={() => this._navigate('/login')} color="inherit">
+                <PersonIcon />
+              </Link>
+            </div>
           </Tooltip>
         </Toolbar>
       );
