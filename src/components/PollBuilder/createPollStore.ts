@@ -118,6 +118,7 @@ export class CreatePollStore implements ICreatePollStore {
       const pollId = v4();
       store.loading = true;
       yield createPoll(store.rootStore.authStore.jwtToken, pollId, store.title, store.options);
+      store.rootStore.gaStore!.sendEvent('Pool', 'Created new poll: ' + store.title);
       store.step = 1;
       store.title = "";
       store.options = [];

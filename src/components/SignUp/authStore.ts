@@ -151,6 +151,7 @@ export class AuthStore implements IAuthStore {
       store.rootStore.walletStore.setWalletBalances(newBalances);
       store.loggedId = true;
       store.rootStore.websocketStore!.connectSocket();
+      store.rootStore.gaStore!.setUser();
     } catch (e) {
       console.error(e.message)
     }

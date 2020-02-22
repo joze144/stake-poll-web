@@ -10,11 +10,13 @@ import { CreatePollStore, ICreatePollStore } from './PollBuilder/createPollStore
 import { IPollViewerStore, PollViewerStore } from './PollViewer/pollViewerStore';
 import { HistoryStore, IHistoryStore } from './History/historyStore';
 import { WalletStore, IWalletStore } from './Wallet/walletStore';
+import { GaStore, IGaStore } from './GoogleAnalytics/gaStore';
 
 export interface IRootStore {
   authStore?: IAuthStore;
   createPollStore?: ICreatePollStore;
   eventSubscriptionStore?: IEventSubscriptionStore;
+  GaStore?: IGaStore;
   historyStore?: IHistoryStore;
   pollViewerStore?: IPollViewerStore;
   routerStore?: IRouterStore;
@@ -32,6 +34,7 @@ export class RootStore implements IRootStore {
   authStore: AuthStore = new AuthStore(this);
   createPollStore: CreatePollStore = new CreatePollStore(this);
   eventSubscriptionStore: EventSubscriptionStore = new EventSubscriptionStore(this);
+  gaStore: GaStore = new GaStore(this);
   historyStore: HistoryStore = new HistoryStore(this);
   pollViewerStore: PollViewerStore = new PollViewerStore(this);
   routerStore: RouterStore = new RouterStore(this);
@@ -44,6 +47,7 @@ export class RootStore implements IRootStore {
       this.websocketStore.connectSocket();
       this.historyStore.loadHistoryOnHydration();
       this.pollViewerStore.loadPollOnHydration();
+      this.gaStore.initiate();
     });
     hydrate('createpoll', this.createPollStore);
     hydrate('wallet', this.walletStore);
