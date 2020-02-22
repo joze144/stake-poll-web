@@ -7,6 +7,7 @@ import MediumIcon from '../Icon/MediumIcon';
 import { Box, Link as MaterialLink } from '@material-ui/core';
 import GithubIcon from '../Icon/GithubIcon';
 import { Link } from 'react-router-dom';
+import KofiIcon from '../Icon/KofiIcon';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,6 +48,7 @@ export default function Footer() {
           <Box className={classes.boxgrow}>
           </Box>
           <Box>
+            <MaterialLink className={classes.fab} href="https://ko-fi.com/jozhe5" target="_blank"><KofiIcon /></MaterialLink>
             <MaterialLink className={classes.fab} href="https://medium.com/@jozhe" target="_blank"><MediumIcon /></MaterialLink>
             <MaterialLink className={classes.fab} href="https://github.com/joze144" target="_blank"><GithubIcon /></MaterialLink>
           </Box>
