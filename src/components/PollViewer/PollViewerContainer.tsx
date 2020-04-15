@@ -110,11 +110,15 @@ class PollViewerContainer extends Component<PollViewerContainerProps, PollViewer
     const voted = !!this.props.pollViewerStore!.chosenOption;
     const title = this.props.pollViewerStore!.title;
     const options = this.props.pollViewerStore!.options;
-    const haveResults = options && options.findIndex(({weight}) => weight > 0) > -1;
+    const stakedResults = this.props.pollViewerStore!.stakedMode;
+    const haveResults = stakedResults ?
+      options && options.findIndex(({weight}) => weight > 0) > -1 :
+      options && options.findIndex(({numberOfVoters}) => numberOfVoters > 0) > -1;
+
     const chosenOption = this.props.pollViewerStore!.chosenOption;
     const chosenOptionId = chosenOption ? chosenOption.id : null;
     const url = this.props.pollViewerStore!.url;
-    const stakedResults = this.props.pollViewerStore!.stakedMode;
+
     const stakedSwitch = (
       <Typography className={this.props.classes.fab} component="div" color="textSecondary">
         <Grid component="label" container alignItems="center" spacing={1}>
